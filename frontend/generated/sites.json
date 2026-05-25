@@ -1,5 +1,29 @@
 [
   {
+    "id": "qr-code-generator-1779745295520",
+    "idea": "A QR code generator that converts text or URLs into scannable QR codes instantly.",
+    "repoName": "qr-code-generator",
+    "category": "tool",
+    "type": "music platform",
+    "style": "sci-fi holographic",
+    "font": "Syne",
+    "repoUrl": "https://github.com/anti60/ai-site-factory/tree/main/frontend/generated/qr-code-generator",
+    "liveUrl": "/generated/qr-code-generator/index.html",
+    "score": 7,
+    "verdict": "deploy",
+    "repairs": 1,
+    "critique": "The tool functions adequately but requires improvements in feedback mechanisms and originality for a better user experience.",
+    "dimensions": {
+      "usefulness": 8,
+      "design": 7,
+      "responsiveness": 7,
+      "originality": 6,
+      "usability": 8,
+      "performance": 7
+    },
+    "createdAt": "2026-05-25T21:41:35.520Z"
+  },
+  {
     "id": "terminal-typer-1779745252739",
     "idea": "A retro terminal inspired typing game where players race against the clock to type commands accurately.",
     "repoName": "terminal-typer",
