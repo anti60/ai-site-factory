@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bubble Popper Game</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: rgba(240, 240, 240, 0.2);
+            backdrop-filter: blur(10px);
+            font-family: 'DM Sans', sans-serif;
+        }
+        #game {
+            position: relative;
+            width: 90vw;
+            height: 80vh;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+        .bubble {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 100, 100, 0.7);
+            transition: transform 0.2s;
+        }
+        #scoreboard {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: white;
+            font-size: 24px;
+        }
+        #restart {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background: rgba(10, 10, 15, 0.8);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 18px;
+            display: none;
+        }
+        #restart:hover {
+            background: rgba(10, 10, 15, 1);
+        }
+        @media (max-width: 600px) {
+            #game {
+                width: 95vw;
+                height: 70vh;
+            }
+            #scoreboard {
+                font-size: 20px;
+            }
+            #restart {
+                font-size: 16px;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="game">
+        <div id="scoreboard">Score: 0</div>
+        <button id="restart">Restart</button>
+    </div>
+    <script>
+        const gameArea = document.getElementById('game');
+        const scoreboard = document.getElementById('scoreboard');
+        const restartButton = document.getElementById('restart');
+        let score = 0;
+        let bubbleInterval;
+        let gameActive = false;
+
+        function startGame() {
+            score = 0;
+            gameActive = true;
+            scoreboard.innerText = 'Score: ' + score;
+            restartButton.style.display = 'none';
+            createBubble();
+        }
+
+        function createBubble() {
+            const bubble = document.createElement('div');
+            const size = Math.random() * (100 - 30) + 30;
+            const colors = ['rgba(255, 100, 100, 0.7)', 'rgba(100, 255, 100, 0.7)', 'rgba(100, 100, 255, 0.7)', 'rgba(255, 255, 100, 0.7)', 'rgba(255, 100, 255, 0.7)', 'rgba(100, 255, 255, 0.7)'];
+            bubble.classList.add('bubble');
+            bubble.style.width = size + 'px';
+            bubble.style.height = size + 'px';
+            bubble.style.left = Math.random() * (gameArea.clientWidth - size) + 'px';
+            bubble.style.top = Math.random() * (gameArea.clientHeight - size) + 'px';
+            bubble.style.background = colors[Math.floor(Math.random() * colors.length)];
+            bubble.addEventListener('click', popBubble);
+            gameArea.appendChild(bubble);
+
+            bubbleInterval = setTimeout(() => {
+                bubble.remove();
+                if (gameActive) createBubble();
+            }, 2000);
+        }
+
+        function popBubble() {
+            score++;
+            scoreboard.innerText = 'Score: ' + score;
+            clearTimeout(bubbleInterval);
+            this.remove();
+            showPopFeedback(this);
+            createBubble();
+        }
+
+        function showPopFeedback(bubble) {
+            bubble.style.transform = 'scale(1.2)';
+            setTimeout(() => {
+                bubble.style.transform = 'scale(1)';
+            }, 200);
+        }
+
+        function endGame() {
+            gameActive = false;
+            restartButton.style.display = 'block';
+        }
+
+        restartButton.addEventListener('click', startGame);
+        startGame();
+    </script>
+    <a href="http://localhost:4000" id="__back_btn" style="position:fixed;bottom:20px;right:20px;z-index:99999;background:rgba(10,10,15,0.9);backdrop-filter:blur(10px);color:#58a6ff;border:1px solid rgba(88,166,255,0.4);padding:10px 18px;border-radius:50px;font-family:sans-serif;font-size:14px;font-weight:600;text-decoration:none;box-shadow:0 4px 20px rgba(0,0,0,0.5);">← AI Site Factory</a>
+</body>
+</html>

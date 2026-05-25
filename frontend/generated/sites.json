@@ -1,5 +1,53 @@
 [
   {
+    "id": "bubble-popper-game-1779745317030",
+    "idea": "A fast-paced clicking game where players must pop colorful bubbles as they appear on the screen before they disappear.",
+    "repoName": "bubble-popper-game",
+    "category": "game",
+    "type": "AI startup",
+    "style": "glassmorphism",
+    "font": "DM Sans",
+    "repoUrl": "https://github.com/anti60/ai-site-factory/tree/main/frontend/generated/bubble-popper-game",
+    "liveUrl": "/generated/bubble-popper-game/index.html",
+    "score": 8,
+    "verdict": "deploy",
+    "repairs": 1,
+    "critique": "The tool is fun and functional with minor improvements needed for accessibility and user engagement.",
+    "dimensions": {
+      "usefulness": 9,
+      "design": 8,
+      "responsiveness": 7,
+      "originality": 8,
+      "usability": 8,
+      "performance": 8
+    },
+    "createdAt": "2026-05-25T21:41:57.030Z"
+  },
+  {
+    "id": "retro-terminal-interaction-1779745316964",
+    "idea": "An interactive retro terminal that reacts to user input with animated ASCII art and sounds.",
+    "repoName": "retro-terminal-interaction",
+    "category": "random",
+    "type": "fashion brand",
+    "style": "retro terminal",
+    "font": "Outfit",
+    "repoUrl": "https://github.com/anti60/ai-site-factory/tree/main/frontend/generated/retro-terminal-interaction",
+    "liveUrl": "/generated/retro-terminal-interaction/index.html",
+    "score": 5,
+    "verdict": "reject",
+    "repairs": 0,
+    "critique": "The tool lacks clarity in its purpose and has several usability and responsiveness issues.",
+    "dimensions": {
+      "usefulness": 4,
+      "design": 6,
+      "responsiveness": 5,
+      "originality": 5,
+      "usability": 5,
+      "performance": 5
+    },
+    "createdAt": "2026-05-25T21:41:56.964Z"
+  },
+  {
     "id": "qr-code-generator-1779745295520",
     "idea": "A QR code generator that converts text or URLs into scannable QR codes instantly.",
     "repoName": "qr-code-generator",

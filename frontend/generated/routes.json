@@ -1,5 +1,25 @@
 [
   {
+    "slug": "bubble-popper-game",
+    "idea": "A fast-paced clicking game where players must pop colorful bubbles as they appear on the screen before they disappear.",
+    "type": "AI startup",
+    "style": "glassmorphism",
+    "repoUrl": "https://github.com/anti60/ai-site-factory/tree/main/frontend/generated/bubble-popper-game",
+    "liveUrl": "/generated/bubble-popper-game/index.html",
+    "score": 8,
+    "createdAt": "2026-05-25T21:41:57.030Z"
+  },
+  {
+    "slug": "retro-terminal-interaction",
+    "idea": "An interactive retro terminal that reacts to user input with animated ASCII art and sounds.",
+    "type": "fashion brand",
+    "style": "retro terminal",
+    "repoUrl": "https://github.com/anti60/ai-site-factory/tree/main/frontend/generated/retro-terminal-interaction",
+    "liveUrl": "/generated/retro-terminal-interaction/index.html",
+    "score": 5,
+    "createdAt": "2026-05-25T21:41:56.964Z"
+  },
+  {
     "slug": "qr-code-generator",
     "idea": "A QR code generator that converts text or URLs into scannable QR codes instantly.",
     "type": "music platform",
