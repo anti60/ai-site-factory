@@ -1,5 +1,29 @@
 [
   {
+    "id": "markdown-live-previewer-1779745079096",
+    "idea": "A Markdown live previewer that updates as you type.",
+    "repoName": "markdown-live-previewer",
+    "category": "tool",
+    "type": "music platform",
+    "style": "minimalist editorial",
+    "font": "Syne",
+    "repoUrl": "https://github.com/anti60/ai-site-factory/tree/main/frontend/generated/markdown-live-previewer",
+    "liveUrl": "/generated/markdown-live-previewer/index.html",
+    "score": 7,
+    "verdict": "deploy",
+    "repairs": 1,
+    "critique": "The tool is useful but has usability and design issues that need addressing for better clarity and responsiveness.",
+    "dimensions": {
+      "usefulness": 9,
+      "design": 7,
+      "responsiveness": 6,
+      "originality": 6,
+      "usability": 8,
+      "performance": 7
+    },
+    "createdAt": "2026-05-25T21:37:59.096Z"
+  },
+  {
     "id": "interactive-cosmic-playground-1779744446540",
     "idea": "An interactive cosmic playground where stars respond to mouse movements, creating a mesmerizing galaxy of particles.",
     "repoName": "interactive-cosmic-playground",

@@ -1,5 +1,15 @@
 [
   {
+    "slug": "markdown-live-previewer",
+    "idea": "A Markdown live previewer that updates as you type.",
+    "type": "music platform",
+    "style": "minimalist editorial",
+    "repoUrl": "https://github.com/anti60/ai-site-factory/tree/main/frontend/generated/markdown-live-previewer",
+    "liveUrl": "/generated/markdown-live-previewer/index.html",
+    "score": 7,
+    "createdAt": "2026-05-25T21:37:59.096Z"
+  },
+  {
     "slug": "interactive-cosmic-playground",
     "idea": "An interactive cosmic playground where stars respond to mouse movements, creating a mesmerizing galaxy of particles.",
     "type": "cybersecurity company",
