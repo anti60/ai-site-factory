@@ -1,5 +1,15 @@
 [
   {
+    "slug": "innovative-architecture-studio",
+    "idea": "Innovative architectural design studio pushing boundaries with technology.",
+    "type": "architecture studio",
+    "style": "sci-fi holographic",
+    "repoUrl": "https://github.com/anti60/ai-site-factory/tree/main/frontend/generated/innovative-architecture-studio",
+    "liveUrl": "/generated/innovative-architecture-studio/index.html",
+    "score": 6,
+    "createdAt": "2026-05-25T21:26:05.152Z"
+  },
+  {
     "slug": "neon-todo-app",
     "idea": "A sleek neon-themed todo app for efficient task management",
     "type": "SaaS landing page",

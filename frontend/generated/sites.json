@@ -1,5 +1,29 @@
 [
   {
+    "id": "innovative-architecture-studio-1779744365152",
+    "idea": "Innovative architectural design studio pushing boundaries with technology.",
+    "repoName": "innovative-architecture-studio",
+    "category": "user",
+    "type": "architecture studio",
+    "style": "sci-fi holographic",
+    "font": "Syne",
+    "repoUrl": "https://github.com/anti60/ai-site-factory/tree/main/frontend/generated/innovative-architecture-studio",
+    "liveUrl": "/generated/innovative-architecture-studio/index.html",
+    "score": 6,
+    "verdict": "deploy",
+    "repairs": 1,
+    "critique": "The tool shows potential but requires significant improvements in layout, responsiveness, and interactivity to be truly usable.",
+    "dimensions": {
+      "usefulness": 8,
+      "design": 6,
+      "responsiveness": 5,
+      "originality": 6,
+      "usability": 7,
+      "performance": 6
+    },
+    "createdAt": "2026-05-25T21:26:05.152Z"
+  },
+  {
     "id": "neon-todo-app-1779744028320",
     "idea": "A sleek neon-themed todo app for efficient task management",
     "repoName": "neon-todo-app",
