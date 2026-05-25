@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Palette Generator</title>
+    <style>
+        body {
+            font-family: 'Manrope', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #e0eafc, #cfdef3);
+            color: #333;
+        }
+        h1 {
+            margin-bottom: 20px;
+            font-size: 2.5rem;
+            text-align: center;
+        }
+        .palette {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        .color {
+            width: 100px;
+            height: 100px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s;
+        }
+        .color:hover {
+            transform: scale(1.1);
+        }
+        button {
+            padding: 10px 20px;
+            background: #58a6ff;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <h1>AI Color Palette Generator</h1>
+    <button id="generateBtn">Generate Palette</button>
+    <div class="palette" id="colorPalette"></div>
+
+    <script>
+        function generateColor() {
+            return '#' + Math.floor(Math.random()*16777215).toString(16);
+        }
+        function generatePalette() {
+            const palette = document.getElementById('colorPalette');
+            palette.innerHTML = '';
+            for(let i = 0; i < 5; i++) {
+                const color = generateColor();
+                const colorDiv = document.createElement('div');
+                colorDiv.className = 'color';
+                colorDiv.style.backgroundColor = color;
+                colorDiv.innerText = color;
+                colorDiv.onclick = () => {
+                    navigator.clipboard.writeText(color);
+                    alert('Copied ' + color + ' to clipboard!');
+                };
+                palette.appendChild(colorDiv);
+            }
+        }
+        document.getElementById('generateBtn').addEventListener('click', generatePalette);
+    </script>
+    <a href="http://localhost:4000" id="__back_btn" style="position:fixed;bottom:20px;right:20px;z-index:99999;background:rgba(10,10,15,0.9);backdrop-filter:blur(10px);color:#58a6ff;border:1px solid rgba(88,166,255,0.4);padding:10px 18px;border-radius:50px;font-family:sans-serif;font-size:14px;font-weight:600;text-decoration:none;box-shadow:0 4px 20px rgba(0,0,0,0.5);">← AI Site Factory</a>
+</body>
+</html>

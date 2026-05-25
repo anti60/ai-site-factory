@@ -1,5 +1,29 @@
 [
   {
+    "id": "color-palette-generator-1779745216373",
+    "idea": "Simple color palette generator with copy functionality",
+    "repoName": "color-palette-generator",
+    "category": "tool",
+    "type": "SaaS landing page",
+    "style": "AI aesthetic",
+    "font": "Manrope",
+    "repoUrl": "https://github.com/anti60/ai-site-factory/tree/main/frontend/generated/color-palette-generator",
+    "liveUrl": "/generated/color-palette-generator/index.html",
+    "score": 8,
+    "verdict": "deploy",
+    "repairs": 0,
+    "critique": "Overall, the tool effectively generates color palettes and copies colors, but requires a functional back button and a better user experience for copying notifications.",
+    "dimensions": {
+      "usefulness": 9,
+      "design": 7,
+      "responsiveness": 9,
+      "originality": 8,
+      "usability": 9,
+      "performance": 8
+    },
+    "createdAt": "2026-05-25T21:40:16.373Z"
+  },
+  {
     "id": "retro-terminal-clicker-1779745202311",
     "idea": "A retro terminal-inspired clicker game where players earn points by typing commands quickly and correctly to unlock upgrades.",
     "repoName": "retro-terminal-clicker",
