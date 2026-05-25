@@ -1,5 +1,29 @@
 [
   {
+    "id": "interactive-terminal-poetry-1779745222092",
+    "idea": "An interactive terminal interface that simulates a futuristic command line with AI-generated poetry and dynamic visual effects.",
+    "repoName": "interactive-terminal-poetry",
+    "category": "random",
+    "type": "music platform",
+    "style": "retro terminal",
+    "font": "Inter",
+    "repoUrl": "https://github.com/anti60/ai-site-factory/tree/main/frontend/generated/interactive-terminal-poetry",
+    "liveUrl": "/generated/interactive-terminal-poetry/index.html",
+    "score": 5,
+    "verdict": "reject",
+    "repairs": 0,
+    "critique": "The tool lacks a clear utility or interaction, making it unsuitable for deployment.",
+    "dimensions": {
+      "usefulness": 4,
+      "design": 5,
+      "responsiveness": 6,
+      "originality": 6,
+      "usability": 4,
+      "performance": 6
+    },
+    "createdAt": "2026-05-25T21:40:22.092Z"
+  },
+  {
     "id": "color-palette-generator-1779745216373",
     "idea": "Simple color palette generator with copy functionality",
     "repoName": "color-palette-generator",
