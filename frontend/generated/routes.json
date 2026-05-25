@@ -1,5 +1,15 @@
 [
   {
+    "slug": "gradient-color-palette-generator",
+    "idea": "Gradient Color Palette Generator",
+    "type": "cybersecurity company",
+    "style": "AI aesthetic",
+    "repoUrl": "https://github.com/anti60/ai-site-factory/tree/main/frontend/generated/gradient-color-palette-generator",
+    "liveUrl": "/generated/gradient-color-palette-generator/index.html",
+    "score": 8,
+    "createdAt": "2026-05-25T21:27:13.434Z"
+  },
+  {
     "slug": "holographic-starship-clicker",
     "idea": "A sci-fi clicker game where players upgrade their starship to explore the universe and collect resources.",
     "type": "cybersecurity company",
