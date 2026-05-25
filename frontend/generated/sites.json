@@ -1,5 +1,29 @@
 [
   {
+    "id": "interactive-cosmic-playground-1779744446540",
+    "idea": "An interactive cosmic playground where stars respond to mouse movements, creating a mesmerizing galaxy of particles.",
+    "repoName": "interactive-cosmic-playground",
+    "category": "random",
+    "type": "cybersecurity company",
+    "style": "luxury dark",
+    "font": "Inter",
+    "repoUrl": "https://github.com/anti60/ai-site-factory/tree/main/frontend/generated/interactive-cosmic-playground",
+    "liveUrl": "/generated/interactive-cosmic-playground/index.html",
+    "score": 5,
+    "verdict": "reject",
+    "repairs": 0,
+    "critique": "The tool lacks practical utility and clear purpose, making it a poor candidate for deployment.",
+    "dimensions": {
+      "usefulness": 3,
+      "design": 6,
+      "responsiveness": 7,
+      "originality": 5,
+      "usability": 4,
+      "performance": 6
+    },
+    "createdAt": "2026-05-25T21:27:26.540Z"
+  },
+  {
     "id": "gradient-color-palette-generator-1779744433434",
     "idea": "Gradient Color Palette Generator",
     "repoName": "gradient-color-palette-generator",
