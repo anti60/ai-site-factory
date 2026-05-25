@@ -1,5 +1,53 @@
 [
   {
+    "id": "retro-terminal-clicker-1779745202311",
+    "idea": "A retro terminal-inspired clicker game where players earn points by typing commands quickly and correctly to unlock upgrades.",
+    "repoName": "retro-terminal-clicker",
+    "category": "game",
+    "type": "creative portfolio",
+    "style": "retro terminal",
+    "font": "Manrope",
+    "repoUrl": "https://github.com/anti60/ai-site-factory/tree/main/frontend/generated/retro-terminal-clicker",
+    "liveUrl": "/generated/retro-terminal-clicker/index.html",
+    "score": 8,
+    "verdict": "deploy",
+    "repairs": 1,
+    "critique": "The tool is functional and usable with minor improvements needed for enhanced originality and engagement.",
+    "dimensions": {
+      "usefulness": 8,
+      "design": 7,
+      "responsiveness": 9,
+      "originality": 7,
+      "usability": 8,
+      "performance": 9
+    },
+    "createdAt": "2026-05-25T21:40:02.311Z"
+  },
+  {
+    "id": "holographic-galaxy-experience-1779745122657",
+    "idea": "An interactive holographic galaxy that reacts to mouse movements with particles and color shifts.",
+    "repoName": "holographic-galaxy-experience",
+    "category": "random",
+    "type": "AI startup",
+    "style": "sci-fi holographic",
+    "font": "Space Grotesk",
+    "repoUrl": "https://github.com/anti60/ai-site-factory/tree/main/frontend/generated/holographic-galaxy-experience",
+    "liveUrl": "/generated/holographic-galaxy-experience/index.html",
+    "score": 4,
+    "verdict": "reject",
+    "repairs": 0,
+    "critique": "The tool lacks practical utility and has significant performance and responsiveness issues.",
+    "dimensions": {
+      "usefulness": 5,
+      "design": 6,
+      "responsiveness": 4,
+      "originality": 5,
+      "usability": 3,
+      "performance": 3
+    },
+    "createdAt": "2026-05-25T21:38:42.657Z"
+  },
+  {
     "id": "vaporwave-typing-challenge-1779745082749",
     "idea": "A fast-paced typing game where players must quickly type words that appear in a neon vaporwave style before they disappear.",
     "repoName": "vaporwave-typing-challenge",

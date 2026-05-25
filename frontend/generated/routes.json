@@ -1,5 +1,25 @@
 [
   {
+    "slug": "retro-terminal-clicker",
+    "idea": "A retro terminal-inspired clicker game where players earn points by typing commands quickly and correctly to unlock upgrades.",
+    "type": "creative portfolio",
+    "style": "retro terminal",
+    "repoUrl": "https://github.com/anti60/ai-site-factory/tree/main/frontend/generated/retro-terminal-clicker",
+    "liveUrl": "/generated/retro-terminal-clicker/index.html",
+    "score": 8,
+    "createdAt": "2026-05-25T21:40:02.311Z"
+  },
+  {
+    "slug": "holographic-galaxy-experience",
+    "idea": "An interactive holographic galaxy that reacts to mouse movements with particles and color shifts.",
+    "type": "AI startup",
+    "style": "sci-fi holographic",
+    "repoUrl": "https://github.com/anti60/ai-site-factory/tree/main/frontend/generated/holographic-galaxy-experience",
+    "liveUrl": "/generated/holographic-galaxy-experience/index.html",
+    "score": 4,
+    "createdAt": "2026-05-25T21:38:42.657Z"
+  },
+  {
     "slug": "vaporwave-typing-challenge",
     "idea": "A fast-paced typing game where players must quickly type words that appear in a neon vaporwave style before they disappear.",
     "type": "AI startup",
