@@ -166,8 +166,10 @@ async function runPipeline(userPrompt = '', category = 'user') {
     }
   }
 
-  const { repoUrl, liveUrl } = await deployToGitHubAndVercel(site);
-  emit(`[Pipeline] ✅ Live: ${liveUrl}`);
+  const ghUser  = process.env.GITHUB_USER || 'anti60';
+  const REPO_NAME = 'ai-site-factory';
+  const liveUrl = `/generated/${site.repoName}/index.html`;
+  const repoUrl = `https://github.com/${ghUser}/${REPO_NAME}/tree/main/frontend/generated/${site.repoName}`;
 
   const metadata = {
     id:        site.repoName + '-' + Date.now(),
@@ -197,6 +199,9 @@ async function runPipeline(userPrompt = '', category = 'user') {
   await fse.writeJson(metaPath, sites, { spaces: 2 });
 
   await addRoute(metadata);
+
+  await deployToGitHubAndVercel(site);
+  emit(`[Pipeline] ✅ Live: ${liveUrl}`);
   emit('[Pipeline] ✅ Complete!');
   return { ...metadata, log };
 }
