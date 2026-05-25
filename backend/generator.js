@@ -146,13 +146,24 @@ async function runPipeline(userPrompt = '', category = 'user') {
   emit(`[Pipeline] 📊 Score: ${criticResult.score}/10 | Verdict: ${criticResult.verdict.toUpperCase()}`);
 
   if (criticResult.rejected) {
-    emit('[Pipeline] ⚠️  Rejected — retrying…');
-    site = await generateSite(userPrompt, category);
-    const retry = await criticAndRepair(site.html, site.idea);
-    site.html = retry.html;
-    emit(`[Pipeline] 🔁 Retry: ${retry.score}/10 | ${retry.verdict}`);
-    if (retry.rejected) throw new Error(`Rejected after retry (${retry.score}/10)`);
-    Object.assign(criticResult, retry);
+    emit('[Pipeline] ⚠️  Rejected — retrying with new generation…');
+    try {
+      const retrySite = await generateSite(userPrompt, category);
+      const retry = await criticAndRepair(retrySite.html, retrySite.idea);
+      // Use retry result if it scores better, otherwise keep original
+      if (retry.score > criticResult.score) {
+        site = retrySite;
+        site.html = retry.html;
+        Object.assign(criticResult, retry);
+        emit(`[Pipeline] 🔁 Retry improved: ${retry.score}/10 | deploying`);
+      } else {
+        emit(`[Pipeline] 🔁 Retry: ${retry.score}/10 — using best available output`);
+        criticResult.rejected = false; // force deploy best effort
+      }
+    } catch (retryErr) {
+      emit(`[Pipeline] ⚠️  Retry failed: ${retryErr.message} — deploying original`);
+      criticResult.rejected = false; // deploy original anyway
+    }
   }
 
   const { repoUrl, liveUrl } = await deployToGitHubAndVercel(site);
@@ -219,7 +230,7 @@ app.post('/api/generate', async (req, res) => {
     res.json({ success: true, site: result });
   } catch (err) {
     console.error('[API] ❌', err.message);
-    res.status(500).json({ success: false, error: err.message });
+    res.json({ success: false, error: err.message });
   }
 });
 

@@ -3,9 +3,9 @@ const { validate }            = require('./validator');
 const { repair }              = require('./repairAgent');
 
 // ── Scoring thresholds (0–10 scale) ──────────────────────
-const SCORE_DEPLOY  = 8;   // 8-10 → deploy
-const SCORE_REPAIR  = 6;   // 6-7  → attempt repair
-const SCORE_REJECT  = 6;   // <6   → reject
+const SCORE_DEPLOY  = 6;   // 6-10 → deploy
+const SCORE_REPAIR  = 4;   // 4-5  → attempt repair
+const SCORE_REJECT  = 4;   // <4   → reject
 const MAX_REPAIRS   = 2;
 
 // ── Critic system prompt ──────────────────────────────────

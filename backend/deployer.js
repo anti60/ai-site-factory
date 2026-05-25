@@ -5,52 +5,57 @@ const execPromise = util.promisify(exec);
 const path = require('path');
 
 // ── Deployer ──────────────────────────────────────────────
-// Now deploys strictly by committing to the existing MAIN repository.
-// Vercel handles the actual build/deploy automatically upon push.
+// Commits the newly generated site into the monorepo and pushes to GitHub.
+// Vercel auto-redeploys the platform when it detects new commits on main.
 async function deployToGitHubAndVercel(site) {
-  const { repoName, idea } = site;
-  
-  console.log(`[Deployer] 📁 Updating main project structure for: ${repoName}`);
+  const { repoName } = site;
 
-  // 1. We assume generator.js has already saved the files to /frontend/generated/
-  const genDir = path.resolve(__dirname, '../frontend/generated');
-  
+  // Root of the git repository (one level above /backend)
+  const REPO_ROOT = path.resolve(__dirname, '..');
+  const GITHUB_USER  = process.env.GITHUB_USER  || 'anti60';
+  const GITHUB_TOKEN = process.env.GITHUB_TOKEN || '';
+  const REPO_NAME    = 'ai-site-factory';
+
+  // Authenticated remote so we never need stored credentials
+  const remoteUrl = `https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/${GITHUB_USER}/${REPO_NAME}.git`;
+
+  const exec = (cmd) => execPromise(cmd, { cwd: REPO_ROOT });
+
+  console.log(`[Deployer] 📁 Committing new site: ${repoName}`);
+
   try {
-    // 2. Commit changes
-    console.log(`[Deployer] 📤 Committing changes to existing GitHub repository...`);
-    await execPromise(`git add "${genDir}"`);
-    
-    // Using a generic try-catch for commit in case there's nothing to commit (e.g. testing)
+    // Ensure the authenticated remote exists / is up to date
     try {
-      await execPromise(`git commit -m "feat: Auto-generated tool - ${repoName}"`);
-    } catch (commitErr) {
-      if (!commitErr.message.includes('nothing to commit')) {
-        throw commitErr;
-      }
+      await exec(`git remote set-url origin "${remoteUrl}"`);
+    } catch (_) {
+      await exec(`git remote add origin "${remoteUrl}"`);
     }
 
-    // 3. Push to existing repository
-    await execPromise('git push');
-    console.log(`[Deployer] ✅ Code pushed to GitHub successfully.`);
-    
+    // Stage only the generated directory (keeps other working-tree changes safe)
+    await exec(`git add frontend/generated`);
+
+    // Commit — ignore "nothing to commit" gracefully
+    try {
+      await exec(`git commit -m "feat: auto-deploy ${repoName}"`);
+      console.log(`[Deployer] ✅ Committed to git.`);
+    } catch (commitErr) {
+      if (!commitErr.message.includes('nothing to commit')) throw commitErr;
+      console.log(`[Deployer] ℹ️  Nothing new to commit — already up to date.`);
+    }
+
+    // Push to GitHub → triggers Vercel auto-deploy
+    await exec(`git push origin main`);
+    console.log(`[Deployer] 🚀 Pushed to GitHub — Vercel deploy triggered!`);
+
   } catch (err) {
-    console.warn(`[Deployer] ⚠️ Git operation failed (Make sure this project is a git repository with a configured remote!):`);
-    console.warn(`[Deployer] ${err.message.split('\n')[0]}`);
+    console.error(`[Deployer] ❌ Git push failed: ${err.message.split('\n')[0]}`);
   }
 
-  // 4. Construct live URLs
-  // Since we are deploying to the main site, the URL is just a path under the main domain.
-  // Example: mainsite.com/generated/repoName/index.html
-  // We'll use relative URLs so the dashboard can link directly to them regardless of the domain.
-  
+  const ghUser  = process.env.GITHUB_USER || 'anti60';
   const liveUrl = `/generated/${repoName}/index.html`;
-  
-  // GitHub repo URL placeholder (since it's a monorepo now)
-  const ghUser = process.env.GITHUB_USER || 'your-username';
-  const repoUrl = `https://github.com/${ghUser}/main-platform-repo/tree/main/frontend/generated/${repoName}`;
+  const repoUrl = `https://github.com/${ghUser}/${REPO_NAME}/tree/main/frontend/generated/${repoName}`;
 
-  console.log(`[Deployer] ✅ Tool will be live at: ${liveUrl} (once Vercel finishes auto-deploy)`);
-  
+  console.log(`[Deployer] ✅ Will be live at: ${liveUrl}`);
   return { repoUrl, liveUrl };
 }
 

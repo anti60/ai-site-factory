@@ -1,5 +1,15 @@
 [
   {
+    "slug": "architecture-studio-website",
+    "idea": "Designing timeless structures with a focus on sustainability.",
+    "type": "architecture studio",
+    "style": "brutalism",
+    "repoUrl": "https://github.com/anti60/main-platform-repo/tree/main/frontend/generated/architecture-studio-website",
+    "liveUrl": "/generated/architecture-studio-website/index.html",
+    "score": 6,
+    "createdAt": "2026-05-25T21:17:24.669Z"
+  },
+  {
     "slug": "ai-startup-website",
     "idea": "Transforming industries with AI-driven solutions",
     "type": "AI startup",

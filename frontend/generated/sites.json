@@ -1,5 +1,29 @@
 [
   {
+    "id": "architecture-studio-website-1779743844669",
+    "idea": "Designing timeless structures with a focus on sustainability.",
+    "repoName": "architecture-studio-website",
+    "category": "user",
+    "type": "architecture studio",
+    "style": "brutalism",
+    "font": "Inter",
+    "repoUrl": "https://github.com/anti60/main-platform-repo/tree/main/frontend/generated/architecture-studio-website",
+    "liveUrl": "/generated/architecture-studio-website/index.html",
+    "score": 6,
+    "verdict": "deploy",
+    "repairs": 2,
+    "critique": "The tool presents a cohesive concept but requires significant refinements in design, usability, and responsiveness to become deployable.",
+    "dimensions": {
+      "usefulness": 7,
+      "design": 5,
+      "responsiveness": 6,
+      "originality": 6,
+      "usability": 7,
+      "performance": 7
+    },
+    "createdAt": "2026-05-25T21:17:24.669Z"
+  },
+  {
     "id": "ai-startup-website-1779743392687",
     "idea": "Transforming industries with AI-driven solutions",
     "repoName": "ai-startup-website",
