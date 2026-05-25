@@ -1,5 +1,15 @@
 [
   {
+    "slug": "holographic-starship-clicker",
+    "idea": "A sci-fi clicker game where players upgrade their starship to explore the universe and collect resources.",
+    "type": "cybersecurity company",
+    "style": "sci-fi holographic",
+    "repoUrl": "https://github.com/anti60/ai-site-factory/tree/main/frontend/generated/holographic-starship-clicker",
+    "liveUrl": "/generated/holographic-starship-clicker/index.html",
+    "score": 6,
+    "createdAt": "2026-05-25T21:26:10.969Z"
+  },
+  {
     "slug": "innovative-architecture-studio",
     "idea": "Innovative architectural design studio pushing boundaries with technology.",
     "type": "architecture studio",

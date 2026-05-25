@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Holographic Starship Clicker</title>
+    <style>
+        body {
+            background: radial-gradient(circle, #1a1f24 0%, #0a0c10 100%);
+            color: #58a6ff;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            flex-direction: column;
+        }
+        #game {
+            text-align: center;
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            max-width: 90%;
+        }
+        #score, #upgrade {
+            font-size: 24px;
+            margin: 10px 0;
+        }
+        button {
+            background: rgba(88, 166, 255, 0.8);
+            border: none;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background 0.3s, transform 0.3s;
+            font-family: 'Inter', sans-serif;
+        }
+        button:hover {
+            background: rgba(88, 166, 255, 1);
+            transform: scale(1.05);
+        }
+        @media (max-width: 600px) {
+            #score, #upgrade {
+                font-size: 18px;
+            }
+            button {
+                padding: 12px 24px;
+                font-size: 16px;
+            }
+            h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+    <link href='https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap' rel='stylesheet'>
+</head>
+<body>
+    <div id="game">
+        <h1>Holographic Starship Clicker</h1>
+        <p id="instructions">Click to collect resources. Use your resources to upgrade your starship!</p>
+        <div id="score">Score: 0</div>
+        <button id="collect">🚀 Collect Resources</button>
+        <div id="upgrade">Upgrade Level: 0</div>
+        <button id="upgradeBtn">🔧 Upgrade Starship</button>
+        <button id="restart">🔄 Restart Game</button>
+    </div>
+    <script>
+        let score = 0;
+        let upgradeLevel = 0;
+        const scoreDisplay = document.getElementById('score');
+        const upgradeDisplay = document.getElementById('upgrade');
+        const instructions = document.getElementById('instructions');
+
+        document.getElementById('collect').onclick = function() {
+            score += Math.pow(2, upgradeLevel);
+            scoreDisplay.innerText = 'Score: ' + score;
+        };
+
+        document.getElementById('upgradeBtn').onclick = function() {
+            if (score >= Math.pow(10, upgradeLevel)) {
+                score -= Math.pow(10, upgradeLevel);
+                upgradeLevel++;
+                upgradeDisplay.innerText = 'Upgrade Level: ' + upgradeLevel;
+                scoreDisplay.innerText = 'Score: ' + score;
+                instructions.innerText = 'Keep collecting resources to upgrade!';
+            } else {
+                alert('Not enough resources to upgrade!');
+            }
+        };
+
+        document.getElementById('restart').onclick = function() {
+            score = 0;
+            upgradeLevel = 0;
+            scoreDisplay.innerText = 'Score: ' + score;
+            upgradeDisplay.innerText = 'Upgrade Level: ' + upgradeLevel;
+            instructions.innerText = 'Click to collect resources. Use your resources to upgrade your starship!';
+        };
+
+        window.addEventListener('keydown', function(event) {
+            if (event.key === ' ') {
+                document.getElementById('collect').click();
+            }
+        });
+    </script>
+    <a href="http://localhost:4000" id="__back_btn" style="position:fixed;bottom:20px;right:20px;z-index:99999;background:rgba(10,10,15,0.9);backdrop-filter:blur(10px);color:#58a6ff;border:1px solid rgba(88,166,255,0.4);padding:10px 18px;border-radius:50px;font-family:sans-serif;font-size:14px;font-weight:600;text-decoration:none;box-shadow:0 4px 20px rgba(0,0,0,0.5);">← AI Site Factory</a>
+</body>
+</html>
