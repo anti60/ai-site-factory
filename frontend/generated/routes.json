@@ -1,0 +1,42 @@
+[
+  {
+    "slug": "ai-startup-website",
+    "idea": "Transforming industries with AI-driven solutions",
+    "type": "AI startup",
+    "style": "sci-fi holographic",
+    "repoUrl": "https://github.com/anti60/main-platform-repo/tree/main/frontend/generated/ai-startup-website",
+    "liveUrl": "/generated/ai-startup-website/index.html",
+    "score": 6,
+    "createdAt": "2026-05-25T21:09:52.687Z"
+  },
+  {
+    "slug": "fashion-brand-website",
+    "idea": "Elevate your style with our unique, hand-crafted fashion pieces.",
+    "type": "fashion brand",
+    "style": "brutalism",
+    "repoUrl": "https://github.com/anti60/main-platform-repo/tree/main/frontend/generated/fashion-brand-website",
+    "liveUrl": "/generated/fashion-brand-website/index.html",
+    "score": 6,
+    "createdAt": "2026-05-25T21:07:39.446Z"
+  },
+  {
+    "slug": "cat-image-gallery",
+    "idea": "Discover and share adorable cat images in a sleek dark theme",
+    "type": "gaming landing page",
+    "style": "organic biomorphic",
+    "repoUrl": "https://github.com/shreaks-00/main-platform-repo/tree/main/frontend/generated/cat-image-gallery",
+    "liveUrl": "/generated/cat-image-gallery/index.html",
+    "score": 8,
+    "createdAt": "2026-05-25T20:28:03.981Z"
+  },
+  {
+    "slug": "cyberpunk-todo-list",
+    "idea": "A futuristic to-do list application with a sleek cyberpunk aesthetic.",
+    "type": "luxury brand",
+    "style": "brutalism",
+    "repoUrl": "https://github.com/shreaks-00/main-platform-repo/tree/main/frontend/generated/cyberpunk-todo-list",
+    "liveUrl": "/generated/cyberpunk-todo-list/index.html",
+    "score": 7,
+    "createdAt": "2026-05-25T20:26:04.173Z"
+  }
+]

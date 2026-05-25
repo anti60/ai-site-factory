@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>AI Site Factory | Autonomous Website Generation</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--bg:#05050a;--panel:rgba(15,15,25,0.75);--border:rgba(255,255,255,0.07);--accent:#58a6ff;--p2:#a78bfa;--p3:#34d399;--p4:#fb923c;--muted:#64748b;--text:#e2e8f0;--r:12px;}
+body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;overflow-x:hidden;}
+a{text-decoration:none;color:inherit;}
+canvas#bg{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.35;}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:.9rem 2.5rem;background:rgba(5,5,10,.85);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);}
+.logo{font-size:1.35rem;font-weight:900;color:#fff;letter-spacing:-1px;}
+.logo span{background:linear-gradient(90deg,var(--accent),var(--p2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.nav-links a{margin-left:1.8rem;color:var(--muted);font-size:.9rem;transition:color .2s;}
+.nav-links a:hover,.nav-links a.active{color:#fff;}
+.nav-cta{margin-left:1.8rem;background:linear-gradient(135deg,var(--accent),var(--p2));color:#fff;padding:.5rem 1.2rem;border-radius:50px;font-weight:700;font-size:.85rem;}
+
+/* HERO */
+.hero{position:relative;z-index:1;text-align:center;padding:7rem 1.5rem 4rem;}
+.hero-badge{display:inline-flex;align-items:center;gap:.5rem;background:rgba(88,166,255,.1);border:1px solid rgba(88,166,255,.3);color:var(--accent);padding:.35rem .9rem;border-radius:50px;font-size:.8rem;font-weight:600;margin-bottom:1.8rem;}
+.dot-live{width:7px;height:7px;border-radius:50%;background:var(--p3);animation:blink 1.4s infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.2;}}
+.hero h1{font-size:clamp(2.8rem,7vw,5rem);font-weight:900;line-height:1.05;color:#fff;letter-spacing:-2px;margin-bottom:1.2rem;}
+.grad{background:linear-gradient(135deg,var(--accent),var(--p2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.hero p{color:var(--muted);font-size:1.1rem;max-width:580px;margin:0 auto 2.5rem;}
+.hero-btns{display:flex;gap:.8rem;justify-content:center;flex-wrap:wrap;}
+.btn{display:inline-flex;align-items:center;gap:.4rem;padding:.8rem 1.6rem;border-radius:50px;font-weight:700;font-size:.95rem;cursor:pointer;border:none;font-family:'Outfit',sans-serif;transition:all .2s;text-decoration:none;}
+.btn-p{background:linear-gradient(135deg,var(--accent),var(--p2));color:#fff;box-shadow:0 0 25px rgba(88,166,255,.3);}
+.btn-p:hover{transform:translateY(-2px);box-shadow:0 0 40px rgba(88,166,255,.4);}
+.btn-o{background:transparent;color:#fff;border:1px solid var(--border);}
+.btn-o:hover{background:rgba(255,255,255,.05);}
+
+/* STATS BAR */
+.stats-bar{position:relative;z-index:1;display:flex;justify-content:center;gap:4rem;padding:2rem;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:rgba(5,5,10,.5);}
+.stat{text-align:center;}
+.stat-val{font-size:2.2rem;font-weight:900;background:linear-gradient(135deg,var(--accent),var(--p2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.stat-lbl{color:var(--muted);font-size:.85rem;margin-top:.1rem;}
+
+/* SECTION */
+.sec{position:relative;z-index:1;padding:4rem 1.5rem;}
+.sec-head{text-align:center;margin-bottom:2.5rem;}
+.sec-head h2{font-size:clamp(1.6rem,3.5vw,2.4rem);font-weight:900;color:#fff;margin-bottom:.5rem;}
+.sec-head p{color:var(--muted);font-size:.95rem;}
+
+/* COUNTDOWN BADGE */
+.countdown-bar{display:flex;align-items:center;justify-content:center;gap:.6rem;margin-bottom:2rem;font-size:.85rem;color:var(--muted);font-family:'JetBrains Mono',monospace;}
+.cd-badge{background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.25);color:var(--p3);padding:.3rem .8rem;border-radius:6px;font-weight:700;}
+
+/* GENERATOR BOX */
+.gen-wrap{max-width:780px;margin:0 auto;background:var(--panel);backdrop-filter:blur(20px);border:1px solid var(--border);border-radius:var(--r);padding:2rem;box-shadow:0 20px 50px rgba(0,0,0,.5);}
+.gen-lbl{font-size:.85rem;color:var(--muted);margin-bottom:.5rem;display:block;}
+textarea{width:100%;background:rgba(0,0,0,.5);border:1px solid var(--border);color:#fff;padding:1rem;border-radius:8px;font-family:'Outfit',sans-serif;font-size:.95rem;resize:vertical;min-height:90px;outline:none;transition:border-color .2s;}
+textarea:focus{border-color:var(--accent);}
+#genBtn{width:100%;margin-top:.8rem;justify-content:center;font-size:1rem;padding:1rem;background:linear-gradient(135deg,var(--accent),var(--p2));color:#fff;border-radius:8px;box-shadow:0 0 25px rgba(88,166,255,.25);}
+#genBtn:hover:not(:disabled){transform:translateY(-2px);}
+#genBtn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+.terminal{background:#000;border:1px solid rgba(88,166,255,.12);border-radius:8px;padding:1rem;font-family:'JetBrains Mono',monospace;font-size:.82rem;height:180px;overflow-y:auto;margin-top:1.2rem;line-height:1.7;}
+.t-dim{color:var(--muted)}.t-ok{color:var(--p3)}.t-hi{color:var(--accent)}.t-err{color:#f87171;}
+
+/* GALLERY GRID */
+.g-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:1.5rem;max-width:1300px;margin:0 auto;}
+.gcard{background:var(--panel);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column;transition:transform .3s,border-color .3s,box-shadow .3s;}
+.gcard:hover{transform:translateY(-6px);border-color:var(--accent);box-shadow:0 16px 40px rgba(0,0,0,.5),0 0 20px rgba(88,166,255,.15);}
+.gprev{height:175px;background:#000;border-bottom:1px solid var(--border);position:relative;overflow:hidden;}
+.gprev iframe{width:400%;height:400%;transform:scale(.25);transform-origin:0 0;border:none;pointer-events:none;}
+.gprev-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;background:rgba(0,0,0,.55);transition:opacity .25s;}
+.gcard:hover .gprev-overlay{opacity:1;}
+.gprev-overlay a{background:var(--accent);color:#000;padding:.5rem 1.2rem;border-radius:50px;font-weight:700;font-size:.85rem;}
+.gbody{padding:1.1rem;flex:1;display:flex;flex-direction:column;}
+.gbadges{display:flex;gap:.4rem;margin-bottom:.7rem;flex-wrap:wrap;}
+.badge{padding:.2rem .6rem;border-radius:12px;font-size:.72rem;font-weight:700;}
+.b-score{background:rgba(52,211,153,.1);color:var(--p3);border:1px solid rgba(52,211,153,.25);}
+.b-score.low{background:rgba(248,113,113,.1);color:#f87171;border-color:rgba(248,113,113,.25);}
+.b-game{background:rgba(251,146,60,.1);color:var(--p4);border:1px solid rgba(251,146,60,.25);}
+.b-tool{background:rgba(52,211,153,.1);color:var(--p3);border:1px solid rgba(52,211,153,.25);}
+.b-random{background:rgba(167,139,250,.1);color:var(--p2);border:1px solid rgba(167,139,250,.25);}
+.b-user{background:rgba(88,166,255,.1);color:var(--accent);border:1px solid rgba(88,166,255,.25);}
+.gtitle{font-size:.95rem;font-weight:700;color:#fff;margin-bottom:.3rem;line-height:1.3;}
+.gmeta{font-size:.78rem;color:var(--muted);margin-bottom:auto;}
+.gfoot{padding:.8rem 1.1rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
+.gfoot a{font-size:.82rem;color:var(--accent);font-weight:600;}
+.gfoot a:hover{text-decoration:underline;}
+.gdate{font-size:.72rem;color:var(--muted);font-family:'JetBrains Mono',monospace;}
+.empty-g{grid-column:1/-1;text-align:center;padding:3rem;border:1px dashed var(--border);border-radius:var(--r);color:var(--muted);}
+.empty-g b{color:#fff;display:block;margin-bottom:.3rem;}
+
+/* SECTION ACCENT LINES */
+.line-game{border-color:rgba(251,146,60,.4)!important;}
+.line-tool{border-color:rgba(52,211,153,.4)!important;}
+.line-random{border-color:rgba(167,139,250,.4)!important;}
+.line-user{border-color:rgba(88,166,255,.4)!important;}
+
+/* FEATURES */
+.feat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.2rem;max-width:1100px;margin:0 auto;}
+.fc{background:var(--panel);border:1px solid var(--border);border-radius:var(--r);padding:1.8rem;transition:border-color .3s,transform .3s;}
+.fc:hover{border-color:var(--accent);transform:translateY(-3px);}
+.fc-icon{font-size:2rem;margin-bottom:.8rem;}
+.fc-t{font-size:1rem;font-weight:700;color:#fff;margin-bottom:.4rem;}
+.fc-d{color:var(--muted);font-size:.88rem;line-height:1.5;}
+
+footer{position:relative;z-index:1;text-align:center;padding:2.5rem;border-top:1px solid var(--border);color:var(--muted);font-size:.85rem;}
+footer b{color:var(--accent);}
+
+@media(max-width:768px){nav{padding:.7rem 1rem;}.nav-links{display:none;}.stats-bar{gap:1.5rem;flex-wrap:wrap;}.hero{padding:4rem 1rem 2.5rem;}}
+</style>
+</head>
+<body>
+<canvas id="bg"></canvas>
+
+<nav>
+  <div class="logo">AI<span>SiteFactory</span></div>
+  <div class="nav-links">
+    <a href="#generate">Generate</a>
+    <a href="#sec-user">My Sites</a>
+    <a href="#sec-games">Games</a>
+    <a href="#sec-tools">Tools</a>
+    <a href="#sec-random">Random</a>
+    <a href="dashboard.html">Admin</a>
+  </div>
+  <a href="#generate" class="nav-cta btn">⚡ Build</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-badge"><span class="dot-live"></span> Autonomous AI Engine Active</div>
+  <h1>One Prompt.<br><span class="grad">Infinite Websites.</span></h1>
+  <p>The first AI system that designs, critiques, repairs and deploys production-ready websites — fully autonomously.</p>
+  <div class="hero-btns">
+    <a href="#generate" class="btn btn-p">⚡ Start Generating</a>
+    <a href="#sec-user" class="btn btn-o">🌐 Browse Gallery</a>
+  </div>
+</section>
+
+<div class="stats-bar">
+  <div class="stat"><div class="stat-val" id="sTotal">0</div><div class="stat-lbl">Sites Generated</div></div>
+  <div class="stat"><div class="stat-val" id="sGames">0</div><div class="stat-lbl">AI Games</div></div>
+  <div class="stat"><div class="stat-val" id="sTools">0</div><div class="stat-lbl">AI Tools</div></div>
+  <div class="stat"><div class="stat-val" id="sRandom">0</div><div class="stat-lbl">Random Creations</div></div>
+</div>
+
+<!-- GENERATE -->
+<section class="sec" id="generate">
+  <div class="sec-head"><h2>Generate a Website</h2><p>Describe what to build, or leave blank and let the AI surprise you.</p></div>
+  <div class="gen-wrap">
+    <span class="gen-lbl">Your prompt (optional)</span>
+    <textarea id="prompt" placeholder="e.g. A neon Pomodoro timer with task tracking…"></textarea>
+    <button class="btn" id="genBtn">⚡ Generate &amp; Deploy</button>
+    <div class="terminal" id="terminal">
+      <div class="t-dim">> System ready. AI Core online.</div>
+      <div class="t-dim">> Enter a prompt and click Generate.</div>
+    </div>
+  </div>
+</section>
+
+<!-- USER GENERATED -->
+<section class="sec" id="sec-user">
+  <div class="sec-head">
+    <h2>🙋 User Generated Sites</h2>
+    <p>Sites built from your custom prompts.</p>
+  </div>
+  <div class="g-grid" id="grid-user"><div class="empty-g"><b>No user sites yet</b>Type a prompt above to create one.</div></div>
+</section>
+
+<!-- AI GAMES -->
+<section class="sec" id="sec-games">
+  <div class="sec-head">
+    <h2>🎮 AI Generated Games</h2>
+    <p>Fully playable browser games created by the AI.</p>
+  </div>
+  <div class="countdown-bar">Next game auto-deploys in: <span class="cd-badge" id="cd-game">–</span></div>
+  <div class="g-grid" id="grid-game"><div class="empty-g"><b>No games yet</b>The AI will auto-generate a game soon.</div></div>
+</section>
+
+<!-- AI TOOLS -->
+<section class="sec" id="sec-tools">
+  <div class="sec-head">
+    <h2>🔧 AI Generated Tools</h2>
+    <p>Useful browser tools that solve real daily problems.</p>
+  </div>
+  <div class="countdown-bar">Next tool auto-deploys in: <span class="cd-badge" id="cd-tool">–</span></div>
+  <div class="g-grid" id="grid-tool"><div class="empty-g"><b>No tools yet</b>The AI will auto-generate a tool soon.</div></div>
+</section>
+
+<!-- AI RANDOM -->
+<section class="sec" id="sec-random">
+  <div class="sec-head">
+    <h2>🎲 AI Generated Random Websites</h2>
+    <p>Experimental, creative, visually unique web experiences.</p>
+  </div>
+  <div class="countdown-bar">Next creation auto-deploys in: <span class="cd-badge" id="cd-random">–</span></div>
+  <div class="g-grid" id="grid-random"><div class="empty-g"><b>No random sites yet</b>The AI will auto-generate one soon.</div></div>
+</section>
+
+<!-- FEATURES -->
+<section class="sec" id="features">
+  <div class="sec-head"><h2>How It Works</h2><p>A 4-stage fully autonomous pipeline.</p></div>
+  <div class="feat-grid">
+    <div class="fc"><div class="fc-icon">🧠</div><div class="fc-t">AI Ideation</div><div class="fc-d">Give a prompt or let the AI invent something creative and useful entirely on its own.</div></div>
+    <div class="fc"><div class="fc-icon">⚖️</div><div class="fc-t">Critic System</div><div class="fc-d">Every site is scored 0–10 across 6 quality dimensions. Low scores trigger auto-repair.</div></div>
+    <div class="fc"><div class="fc-icon">🔧</div><div class="fc-t">Auto Repair</div><div class="fc-d">The AI repair agent re-codes the weak sections before a second critique pass.</div></div>
+    <div class="fc"><div class="fc-icon">🚀</div><div class="fc-t">Instant Deploy</div><div class="fc-d">Files are committed to the main repo. Vercel auto-redeploys the whole platform.</div></div>
+  </div>
+</section>
+
+<footer>Built with ⚡ by <b>AI Site Factory</b> — Fully Autonomous Generation Engine</footer>
+
+<script>
+// ── Canvas particles ─────────────────────────────────────
+const cv=document.getElementById('bg'),ctx=cv.getContext('2d');
+let pts=[];
+function rsz(){cv.width=innerWidth;cv.height=innerHeight;}
+rsz();window.addEventListener('resize',rsz);
+for(let i=0;i<70;i++)pts.push({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:Math.random()*1.2+.4,vx:(Math.random()-.5)*.25,vy:(Math.random()-.5)*.25,a:Math.random()});
+(function anim(){ctx.clearRect(0,0,cv.width,cv.height);pts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;if(p.x<0)p.x=cv.width;if(p.x>cv.width)p.x=0;if(p.y<0)p.y=cv.height;if(p.y>cv.height)p.y=0;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(88,166,255,${.25+p.a*.4})`;ctx.fill();});requestAnimationFrame(anim);})();
+
+// ── Card builder ─────────────────────────────────────────
+function catBadge(cat){
+  const map={game:['b-game','🎮 Game'],tool:['b-tool','🔧 Tool'],random:['b-random','🎲 Random'],user:['b-user','🙋 Custom']};
+  const [cls,lbl]=map[cat]||['b-user','Custom'];
+  return `<span class="badge ${cls}">${lbl}</span>`;
+}
+function buildCards(sites){
+  if(!sites.length) return null;
+  return sites.map(s=>{
+    const low=s.score<7;
+    const date=s.createdAt?new Date(s.createdAt).toLocaleDateString():'–';
+    const url=`/generated/${s.repoName}/index.html`;
+    return `<div class="gcard">
+      <div class="gprev">
+        <iframe src="${url}" loading="lazy" tabindex="-1"></iframe>
+        <div class="gprev-overlay"><a href="${url}" target="_blank">Visit →</a></div>
+      </div>
+      <div class="gbody">
+        <div class="gbadges">
+          <span class="badge b-score ${low?'low':''}">⭐ ${s.score}/10</span>
+          ${catBadge(s.category)}
+        </div>
+        <div class="gtitle">${s.idea}</div>
+        <div class="gmeta">${s.style||''}</div>
+      </div>
+      <div class="gfoot">
+        <a href="${url}" target="_blank">Open Live →</a>
+        <span class="gdate">${date}</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ── Load all gallery sections ─────────────────────────────
+async function loadGallery(){
+  try{
+    const sites=await fetch('/api/sites').then(r=>r.json());
+    const bycat={user:[],game:[],tool:[],random:[]};
+    sites.forEach(s=>{ const c=s.category||'user'; if(bycat[c]) bycat[c].push(s); });
+
+    document.getElementById('sTotal').textContent=sites.length;
+    document.getElementById('sGames').textContent=bycat.game.length;
+    document.getElementById('sTools').textContent=bycat.tool.length;
+    document.getElementById('sRandom').textContent=bycat.random.length;
+
+    ['user','game','tool','random'].forEach(cat=>{
+      const el=document.getElementById('grid-'+cat);
+      const html=buildCards(bycat[cat]);
+      if(html) el.innerHTML=html;
+    });
+  }catch(e){console.warn('Gallery load failed:',e.message);}
+}
+loadGallery();
+
+// ── Countdown timers ─────────────────────────────────────
+function fmtTime(ms){
+  if(ms<=0) return 'deploying…';
+  const s=Math.floor(ms/1000),m=Math.floor(s/60),h=Math.floor(m/60);
+  return h?`${h}h ${m%60}m ${s%60}s`:`${m}m ${s%60}s`;
+}
+async function updateCountdowns(){
+  try{
+    const sched=await fetch('/api/schedule').then(r=>r.json());
+    const now=Date.now();
+    ['game','tool','random'].forEach(cat=>{
+      const el=document.getElementById('cd-'+cat);
+      if(el&&sched[cat]) el.textContent=fmtTime(sched[cat]-now);
+    });
+  }catch(_){}
+}
+updateCountdowns();
+setInterval(updateCountdowns,1000);
+
+// ── Generator ────────────────────────────────────────────
+const btn=document.getElementById('genBtn');
+const term=document.getElementById('terminal');
+function log(msg,cls=''){const d=document.createElement('div');if(cls)d.className=cls;d.innerHTML='> '+msg;term.appendChild(d);term.scrollTop=term.scrollHeight;}
+btn.addEventListener('click',async()=>{
+  const prompt=document.getElementById('prompt').value.trim();
+  btn.disabled=true;btn.textContent='⚡ Pipeline Running…';term.innerHTML='';
+  log('Starting autonomous pipeline…','t-dim');
+  try{
+    const data=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt,category:'user'})}).then(r=>r.json());
+    if(data.success){
+      const s=data.site;
+      log(`Step 1/4 ✅ Generated: <b>${s.idea}</b>`,'t-ok');
+      log(`Step 2/4 ✅ Critic: ${s.score}/10 | ${(s.verdict||'').toUpperCase()}`,'t-ok');
+      log(`Step 3/4 ✅ Committed to repo.`,'t-ok');
+      log(`Step 4/4 ✅ <a href="/generated/${s.repoName}/index.html" target="_blank" style="color:var(--accent);text-decoration:underline;">View: ${s.repoName} →</a>`,'t-hi');
+      setTimeout(loadGallery,1200);
+    }else{log('Error: '+data.error,'t-err');}
+  }catch(e){log('Network error: '+e.message,'t-err');}
+  btn.disabled=false;btn.textContent='⚡ Generate & Deploy';
+});
+</script>
+</body>
+</html>

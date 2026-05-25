@@ -1,0 +1,96 @@
+[
+  {
+    "id": "ai-startup-website-1779743392687",
+    "idea": "Transforming industries with AI-driven solutions",
+    "repoName": "ai-startup-website",
+    "category": "user",
+    "type": "AI startup",
+    "style": "sci-fi holographic",
+    "font": "Inter",
+    "repoUrl": "https://github.com/anti60/main-platform-repo/tree/main/frontend/generated/ai-startup-website",
+    "liveUrl": "/generated/ai-startup-website/index.html",
+    "score": 6,
+    "verdict": "deploy",
+    "repairs": 2,
+    "critique": "The tool has usability and design issues that need to be addressed before deployment.",
+    "dimensions": {
+      "usefulness": 7,
+      "design": 6,
+      "responsiveness": 6,
+      "originality": 5,
+      "usability": 6,
+      "performance": 6
+    },
+    "createdAt": "2026-05-25T21:09:52.687Z"
+  },
+  {
+    "id": "fashion-brand-website-1779743259446",
+    "idea": "Elevate your style with our unique, hand-crafted fashion pieces.",
+    "repoName": "fashion-brand-website",
+    "category": "user",
+    "type": "fashion brand",
+    "style": "brutalism",
+    "font": "Syne",
+    "repoUrl": "https://github.com/anti60/main-platform-repo/tree/main/frontend/generated/fashion-brand-website",
+    "liveUrl": "/generated/fashion-brand-website/index.html",
+    "score": 6,
+    "verdict": "deploy",
+    "repairs": 2,
+    "critique": "The site has potential but needs refinement in design, usability, and accessibility features to enhance the overall quality.",
+    "dimensions": {
+      "usefulness": 7,
+      "design": 6,
+      "responsiveness": 6,
+      "originality": 5,
+      "usability": 7,
+      "performance": 6
+    },
+    "createdAt": "2026-05-25T21:07:39.446Z"
+  },
+  {
+    "id": "cat-image-gallery-1779740883981",
+    "idea": "Discover and share adorable cat images in a sleek dark theme",
+    "repoName": "cat-image-gallery",
+    "type": "gaming landing page",
+    "style": "organic biomorphic",
+    "font": "Outfit",
+    "repoUrl": "https://github.com/shreaks-00/main-platform-repo/tree/main/frontend/generated/cat-image-gallery",
+    "liveUrl": "/generated/cat-image-gallery/index.html",
+    "score": 8,
+    "verdict": "deploy",
+    "repairs": 0,
+    "critique": "The tool functions well and has a modern design but requires minor adjustments for mobile responsiveness and loading transitions.",
+    "dimensions": {
+      "usefulness": 8,
+      "design": 9,
+      "responsiveness": 7,
+      "originality": 7,
+      "usability": 8,
+      "performance": 8
+    },
+    "createdAt": "2026-05-25T20:28:03.981Z"
+  },
+  {
+    "id": "cyberpunk-todo-list-1779740764173",
+    "idea": "A futuristic to-do list application with a sleek cyberpunk aesthetic.",
+    "repoName": "cyberpunk-todo-list",
+    "type": "luxury brand",
+    "style": "brutalism",
+    "font": "DM Sans",
+    "repoUrl": "https://github.com/shreaks-00/main-platform-repo/tree/main/frontend/generated/cyberpunk-todo-list",
+    "liveUrl": "/generated/cyberpunk-todo-list/index.html",
+    "score": 7,
+    "verdict": "deploy",
+    "repairs": 2,
+    "critique": "While the tool is useful, its design and responsiveness need improvements for better user engagement.",
+    "dimensions": {
+      "usefulness": 8,
+      "design": 6,
+      "responsiveness": 8,
+      "originality": 6,
+      "usability": 7,
+      "performance": 7
+    },
+    "createdAt": "2026-05-25T20:26:04.173Z"
+  }
+]

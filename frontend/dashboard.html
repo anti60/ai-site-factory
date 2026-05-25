@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard | AI Site Factory</title>
+  <link rel="stylesheet" href="styles/globals.css">
+  <style>
+    .dashboard { max-width: 1200px; margin: 3rem auto; padding: 0 1rem; }
+    .header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2.5rem; border-bottom: 1px solid var(--border); padding-bottom: 1.5rem; }
+    h1 { font-size: 2.2rem; color: #fff; font-weight: 900; }
+    .stats { display: flex; gap: 1.5rem; }
+    .stat-card { background: var(--bg-panel); border: 1px solid var(--border); padding: 1.2rem 2rem; border-radius: var(--radius); min-width: 150px; text-align: center; }
+    .stat-card h3 { color: var(--text-muted); font-size: 0.85rem; text-transform: uppercase; margin-bottom: 0.5rem; }
+    .stat-card .val { font-size: 2.5rem; font-weight: 900; color: var(--accent); }
+    
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 2rem; }
+    .card { background: var(--bg-panel); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; display: flex; flex-direction: column; transition: transform 0.3s, border-color 0.3s; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+    .card:hover { transform: translateY(-8px); border-color: var(--accent); }
+    
+    .card-preview { height: 200px; background: #000; border-bottom: 1px solid var(--border); position: relative; overflow: hidden; }
+    .card-preview iframe { width: 400%; height: 400%; transform: scale(0.25); transform-origin: 0 0; border: none; pointer-events: none; }
+    
+    .card-body { padding: 1.5rem; display: flex; flex-direction: column; flex: 1; }
+    .card-title { font-size: 1.25rem; font-weight: 700; color: #fff; margin-bottom: 0.8rem; line-height: 1.3; }
+    .card-meta { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem; flex: 1; line-height: 1.5; }
+    
+    .badges { display: flex; gap: 0.6rem; margin-bottom: 1.2rem; flex-wrap: wrap; }
+    .badge { padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.8rem; font-weight: 700; }
+    .badge-score { background: rgba(52,211,153,0.1); color: var(--success); border: 1px solid rgba(52,211,153,0.3); }
+    .badge-score.low { background: rgba(248,112,112,0.1); color: var(--error); border-color: rgba(248,112,112,0.3); }
+    .badge-verdict { background: rgba(88,166,255,0.1); color: var(--accent); border: 1px solid rgba(88,166,255,0.3); }
+    
+    .card-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); padding-top: 1.2rem; }
+    .card-footer a { font-size: 0.9rem; color: var(--accent); transition: opacity 0.2s; font-weight: 500; }
+    .card-footer a:hover { opacity: 0.8; text-decoration: underline; }
+    .card-date { font-size: 0.8rem; color: var(--text-muted); font-family: var(--font-mono); }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="logo">AI<span>SiteFactory</span></div>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="dashboard.html" style="color:#fff;">Admin Dashboard</a>
+    </div>
+  </nav>
+
+  <div class="dashboard">
+    <div class="header">
+      <div>
+        <h1>Deployment Ledger</h1>
+        <p style="color:var(--text-muted); margin-top:0.5rem; font-size: 1.1rem;">Monitor all autonomous AI generations and critic verdicts.</p>
+      </div>
+      <div class="stats">
+        <div class="stat-card">
+          <h3>Total Sites</h3>
+          <div class="val" id="statTotal">-</div>
+        </div>
+        <div class="stat-card">
+          <h3>Avg Score</h3>
+          <div class="val" id="statAvg">-</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="grid" id="gallery">
+      <p style="color:var(--text-muted);">Loading deployments...</p>
+    </div>
+  </div>
+
+  <script>
+    async function loadSites() {
+      try {
+        const res = await fetch('/api/sites');
+        const sites = await res.json();
+        
+        document.getElementById('statTotal').innerText = sites.length;
+        if(sites.length > 0) {
+          const avg = sites.reduce((sum, s) => sum + (Number(s.score) || 0), 0) / sites.length;
+          document.getElementById('statAvg').innerText = avg.toFixed(1);
+        }
+        
+        const gallery = document.getElementById('gallery');
+        if (sites.length === 0) {
+          gallery.innerHTML = '<p style="color:var(--text-muted); grid-column: 1/-1; text-align: center; padding: 3rem; border: 1px dashed var(--border); border-radius: var(--radius);">No sites generated yet. Go to the homepage to create one!</p>';
+          return;
+        }
+        
+        gallery.innerHTML = sites.map(site => {
+          const isLowScore = site.score < 7;
+          const dateStr = site.createdAt ? new Date(site.createdAt).toLocaleDateString() : 'Just now';
+          return `
+            <div class="card">
+              <div class="card-preview">
+                <iframe src="/generated/${site.repoName}/index.html" loading="lazy" tabindex="-1"></iframe>
+              </div>
+              <div class="card-body">
+                <div class="badges">
+                  <span class="badge badge-score ${isLowScore ? 'low' : ''}">Score: ${site.score}/10</span>
+                  <span class="badge badge-verdict">${site.verdict.toUpperCase()}</span>
+                </div>
+                <div class="card-title">${site.idea}</div>
+                <div class="card-meta">
+                  <strong>Style:</strong> ${site.style} <br>
+                  <strong>Font:</strong> ${site.font} <br>
+                  <strong>Type:</strong> ${site.type || 'Custom'}
+                </div>
+                <div class="card-footer">
+                  <a href="/generated/${site.repoName}/index.html" target="_blank">View Live Preview →</a>
+                  <span class="card-date">${dateStr}</span>
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('');
+      } catch (err) {
+        console.error(err);
+        document.getElementById('gallery').innerHTML = `<p style="color:var(--error);">Failed to load sites: ${err.message}</p>`;
+      }
+    }
+    
+    loadSites();
+  </script>
+</body>
+</html>
