@@ -1,5 +1,15 @@
 [
   {
+    "slug": "vaporwave-typing-challenge",
+    "idea": "A fast-paced typing game where players must quickly type words that appear in a neon vaporwave style before they disappear.",
+    "type": "AI startup",
+    "style": "vaporwave",
+    "repoUrl": "https://github.com/anti60/ai-site-factory/tree/main/frontend/generated/vaporwave-typing-challenge",
+    "liveUrl": "/generated/vaporwave-typing-challenge/index.html",
+    "score": 5,
+    "createdAt": "2026-05-25T21:38:02.749Z"
+  },
+  {
     "slug": "markdown-live-previewer",
     "idea": "A Markdown live previewer that updates as you type.",
     "type": "music platform",
