@@ -1,5 +1,29 @@
 [
   {
+    "id": "cyberpunk-flappy-bird-1779746424241",
+    "idea": "A cyberpunk-themed flappy bird clone where players navigate through neon obstacles.",
+    "repoName": "cyberpunk-flappy-bird",
+    "category": "game",
+    "type": "creative portfolio",
+    "style": "cyberpunk neon",
+    "font": "Space Grotesk",
+    "repoUrl": "https://github.com/anti60/ai-site-factory/tree/main/frontend/generated/cyberpunk-flappy-bird",
+    "liveUrl": "/generated/cyberpunk-flappy-bird/index.html",
+    "score": 5,
+    "verdict": "reject",
+    "repairs": 0,
+    "critique": "The tool is a broken clone of Flappy Bird with significant usability and functionality issues.",
+    "dimensions": {
+      "usefulness": 5,
+      "design": 6,
+      "responsiveness": 7,
+      "originality": 4,
+      "usability": 5,
+      "performance": 5
+    },
+    "createdAt": "2026-05-25T22:00:24.241Z"
+  },
+  {
     "id": "bubble-popper-game-1779745317030",
     "idea": "A fast-paced clicking game where players must pop colorful bubbles as they appear on the screen before they disappear.",
     "repoName": "bubble-popper-game",
