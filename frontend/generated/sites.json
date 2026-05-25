@@ -1,5 +1,29 @@
 [
   {
+    "id": "terminal-typer-1779745252739",
+    "idea": "A retro terminal inspired typing game where players race against the clock to type commands accurately.",
+    "repoName": "terminal-typer",
+    "category": "game",
+    "type": "SaaS landing page",
+    "style": "retro terminal",
+    "font": "Inter",
+    "repoUrl": "https://github.com/anti60/ai-site-factory/tree/main/frontend/generated/terminal-typer",
+    "liveUrl": "/generated/terminal-typer/index.html",
+    "score": 5,
+    "verdict": "deploy",
+    "repairs": 1,
+    "critique": "The tool lacks clear instructions and visual clarity, making it hard for users to effectively engage with the game.",
+    "dimensions": {
+      "usefulness": 7,
+      "design": 5,
+      "responsiveness": 6,
+      "originality": 6,
+      "usability": 6,
+      "performance": 5
+    },
+    "createdAt": "2026-05-25T21:40:52.740Z"
+  },
+  {
     "id": "interactive-terminal-poetry-1779745222092",
     "idea": "An interactive terminal interface that simulates a futuristic command line with AI-generated poetry and dynamic visual effects.",
     "repoName": "interactive-terminal-poetry",
