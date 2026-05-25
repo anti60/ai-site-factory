@@ -1,5 +1,15 @@
 [
   {
+    "slug": "neon-todo-app",
+    "idea": "A sleek neon-themed todo app for efficient task management",
+    "type": "SaaS landing page",
+    "style": "AI aesthetic",
+    "repoUrl": "https://github.com/anti60/ai-site-factory/tree/main/frontend/generated/neon-todo-app",
+    "liveUrl": "/generated/neon-todo-app/index.html",
+    "score": 6,
+    "createdAt": "2026-05-25T21:20:28.320Z"
+  },
+  {
     "slug": "architecture-studio-website",
     "idea": "Designing timeless structures with a focus on sustainability.",
     "type": "architecture studio",

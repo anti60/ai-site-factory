@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Todo App</title>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --background-color: #121212;
+            --primary-color: #1db954;
+            --secondary-color: #ff007f;
+            --text-color: #ffffff;
+            --accent-color: #58a6ff;
+            --border-color: rgba(88,166,255,0.4);
+            --box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+        body {
+            font-family: 'Manrope', sans-serif;
+            margin: 0;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+        h1 {
+            font-size: 3rem;
+            margin: 0;
+            animation: fadeIn 3s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        nav {
+            margin-bottom: 20px;
+        }
+        nav a {
+            color: var(--accent-color);
+            margin: 0 15px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+        nav a:hover {
+            color: var(--secondary-color);
+        }
+        .todo-container {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            max-width: 400px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: var(--box-shadow);
+        }
+        .todo-input {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+        .todo-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .todo-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .delete-btn {
+            background: var(--secondary-color);
+            border: none;
+            border-radius: 5px;
+            color: var(--text-color);
+            cursor: pointer;
+            padding: 5px 10px;
+            transition: background 0.3s;
+        }
+        .delete-btn:hover {
+            background: #d5006d;
+        }
+        .loading {
+            display: none;
+            font-size: 1rem;
+            color: var(--accent-color);
+            margin-top: 10px;
+        }
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2rem;
+            }
+            .todo-input {
+                font-size: 1rem;
+            }
+            .delete-btn {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="#">Home</a>
+        <a href="#">About</a>
+        <a href="#">Contact</a>
+    </nav>
+    <h1>Neon Todo App</h1>
+    <div class="todo-container">
+        <input type="text" class="todo-input" placeholder="Add a new task..." />
+        <div class="loading" id="loading">Loading...</div>
+        <ul class="todo-list"></ul>
+    </div>
+    <script>
+        const input = document.querySelector('.todo-input');
+        const todoList = document.querySelector('.todo-list');
+        const loadingIndicator = document.getElementById('loading');
+        input.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && input.value) {
+                addTodo(input.value);
+                input.value = '';
+            }
+        });
+
+        function addTodo(task) {
+            loadingIndicator.style.display = 'block';
+            const li = document.createElement('li');
+            li.className = 'todo-item';
+            li.textContent = task;
+            const deleteBtn = document.createElement('button');
+            deleteBtn.textContent = 'Delete';
+            deleteBtn.className = 'delete-btn';
+            deleteBtn.addEventListener('click', function() {
+                todoList.removeChild(li);
+            });
+            li.appendChild(deleteBtn);
+            todoList.appendChild(li);
+            loadingIndicator.style.display = 'none';
+        }
+    </script>
+    <a href="http://localhost:4000" id="__back_btn" style="position:fixed;bottom:20px;right:20px;z-index:99999;background:rgba(10,10,15,0.9);backdrop-filter:blur(10px);color:#58a6ff;border:1px solid rgba(88,166,255,0.4);padding:10px 18px;border-radius:50px;font-family:sans-serif;font-size:14px;font-weight:600;text-decoration:none;box-shadow:0 4px 20px rgba(0,0,0,0.5);">← AI Site Factory</a>
+</body>
+</html>

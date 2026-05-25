@@ -1,5 +1,29 @@
 [
   {
+    "id": "neon-todo-app-1779744028320",
+    "idea": "A sleek neon-themed todo app for efficient task management",
+    "repoName": "neon-todo-app",
+    "category": "user",
+    "type": "SaaS landing page",
+    "style": "AI aesthetic",
+    "font": "Manrope",
+    "repoUrl": "https://github.com/anti60/ai-site-factory/tree/main/frontend/generated/neon-todo-app",
+    "liveUrl": "/generated/neon-todo-app/index.html",
+    "score": 6,
+    "verdict": "deploy",
+    "repairs": 1,
+    "critique": "The tool has basic functionality but lacks persistence, user feedback, and presents UI issues that need fixing.",
+    "dimensions": {
+      "usefulness": 7,
+      "design": 6,
+      "responsiveness": 7,
+      "originality": 5,
+      "usability": 6,
+      "performance": 7
+    },
+    "createdAt": "2026-05-25T21:20:28.320Z"
+  },
+  {
     "id": "architecture-studio-website-1779743844669",
     "idea": "Designing timeless structures with a focus on sustainability.",
     "repoName": "architecture-studio-website",
