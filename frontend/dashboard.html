@@ -70,9 +70,11 @@
   </div>
 
   <script>
+    const API = 'https://ai-site-factory.onrender.com';
+
     async function loadSites() {
       try {
-        const res = await fetch('/api/sites');
+        const res = await fetch(`${API}/api/sites`);
         const sites = await res.json();
         
         document.getElementById('statTotal').innerText = sites.length;
@@ -93,7 +95,7 @@
           return `
             <div class="card">
               <div class="card-preview">
-                <iframe src="/generated/${site.repoName}/index.html" loading="lazy" tabindex="-1"></iframe>
+                <iframe src="${API}/generated/${site.repoName}/index.html" loading="lazy" tabindex="-1"></iframe>
               </div>
               <div class="card-body">
                 <div class="badges">
@@ -107,7 +109,7 @@
                   <strong>Type:</strong> ${site.type || 'Custom'}
                 </div>
                 <div class="card-footer">
-                  <a href="/generated/${site.repoName}/index.html" target="_blank">View Live Preview →</a>
+                  <a href="${API}/generated/${site.repoName}/index.html" target="_blank">View Live Preview →</a>
                   <button onclick="deleteSite('${site.repoName}')" style="background:#f87070; color:#fff; border:none; padding:4px 8px; border-radius:4px; cursor:pointer; font-weight:bold;">🗑 Delete</button>
                   <span class="card-date">${dateStr}</span>
                 </div>
@@ -124,7 +126,7 @@
     async function deleteSite(repoName) {
       if(!confirm('Are you sure you want to permanently delete ' + repoName + '?')) return;
       try {
-        const res = await fetch('/api/delete', {
+        const res = await fetch(`${API}/api/delete`, {
           method: 'POST',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({ siteName: repoName })
