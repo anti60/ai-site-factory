@@ -53,13 +53,22 @@
         <p style="color:var(--text-muted); margin-top:0.5rem; font-size: 1.1rem;">Monitor all autonomous AI generations and critic verdicts.</p>
       </div>
       <div class="stats">
-        <div class="stat-card">
-          <h3>Total Sites</h3>
-          <div class="val" id="statTotal">-</div>
+        <div class="stat-card" style="min-width: 120px; padding: 0.8rem;">
+          <h3 style="font-size: 0.7rem;">Total Sites</h3>
+          <div class="val" id="statTotal" style="font-size: 1.8rem;">-</div>
         </div>
-        <div class="stat-card">
-          <h3>Avg Score</h3>
-          <div class="val" id="statAvg">-</div>
+        <div class="stat-card" style="min-width: 120px; padding: 0.8rem;">
+          <h3 style="font-size: 0.7rem;">Avg Score</h3>
+          <div class="val" id="statAvg" style="font-size: 1.8rem;">-</div>
+        </div>
+        <div class="stat-card" style="min-width: 160px; padding: 0.8rem; display: flex; flex-direction: column; justify-content: center; gap: 0.5rem; border-color: rgba(248,112,112,0.3);">
+          <button onclick="deleteLowScores()" style="background:#f87070; color:#fff; border:none; padding:6px 10px; border-radius:4px; cursor:pointer; font-weight:bold; font-size: 0.8rem;">🗑 Purge Scores < 7</button>
+          <button onclick="deleteAll()" style="background:transparent; color:#f87070; border:1px solid #f87070; padding:4px 10px; border-radius:4px; cursor:pointer; font-weight:bold; font-size: 0.75rem;">Nuke All</button>
+        </div>
+        <div class="stat-card" style="min-width: 160px; padding: 0.8rem; display: flex; flex-direction: column; justify-content: center; gap: 0.5rem; border-color: rgba(88,166,255,0.3);">
+          <button onclick="forceGen('game')" style="background:var(--accent); color:#fff; border:none; padding:4px; border-radius:4px; cursor:pointer; font-weight:bold; font-size: 0.75rem;">⚡ Force Game</button>
+          <button onclick="forceGen('tool')" style="background:var(--accent); color:#fff; border:none; padding:4px; border-radius:4px; cursor:pointer; font-weight:bold; font-size: 0.75rem;">⚡ Force Tool</button>
+          <button onclick="forceGen('random')" style="background:var(--accent); color:#fff; border:none; padding:4px; border-radius:4px; cursor:pointer; font-weight:bold; font-size: 0.75rem;">⚡ Force Random</button>
         </div>
       </div>
     </div>
@@ -76,6 +85,7 @@
       try {
         const res = await fetch(`${API}/api/sites`);
         const sites = await res.json();
+        allSitesList = sites;
         
         document.getElementById('statTotal').innerText = sites.length;
         if(sites.length > 0) {
@@ -109,9 +119,9 @@
                   <strong>Type:</strong> ${site.type || 'Custom'}
                 </div>
                 <div class="card-footer">
-                  <a href="${API}/generated/${site.repoName}/index.html" target="_blank">View Live Preview →</a>
+                  <a href="${API}/generated/${site.repoName}/index.html" target="_blank">Live Preview ↗</a>
+                  <a href="${site.repoUrl}" target="_blank" style="color:var(--text-muted); font-weight:normal;">Source Code ↗</a>
                   <button onclick="deleteSite('${site.repoName}')" style="background:#f87070; color:#fff; border:none; padding:4px 8px; border-radius:4px; cursor:pointer; font-weight:bold;">🗑 Delete</button>
-                  <span class="card-date">${dateStr}</span>
                 </div>
               </div>
             </div>
@@ -123,6 +133,44 @@
       }
     }
     
+    // Bulk Delete Logic
+    let allSitesList = [];
+    async function deleteLowScores() {
+      const lowSites = allSitesList.filter(s => s.score < 7);
+      if (lowSites.length === 0) return alert('No low scoring sites found.');
+      if(!confirm(`Are you sure you want to permanently delete ${lowSites.length} low scoring sites?`)) return;
+      
+      for (const site of lowSites) {
+        await fetch(`${API}/api/delete`, {
+          method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ siteName: site.repoName })
+        });
+      }
+      loadSites();
+    }
+
+    async function deleteAll() {
+      if (allSitesList.length === 0) return;
+      if(!confirm(`WARNING: Are you absolutely sure you want to NUKE ALL ${allSitesList.length} sites permanently?`)) return;
+      
+      for (const site of allSitesList) {
+        await fetch(`${API}/api/delete`, {
+          method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ siteName: site.repoName })
+        });
+      }
+      loadSites();
+    }
+
+    async function forceGen(cat) {
+      if(!confirm(`Trigger autonomous generation for ${cat.toUpperCase()}? This will run in the background.`)) return;
+      try {
+        const res = await fetch(`${API}/api/force-generate`, {
+          method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ category: cat })
+        });
+        if (res.ok) alert(`Generation for ${cat} started in the background!`);
+        else alert('Failed to trigger generation.');
+      } catch (e) { alert('Network error: ' + e.message); }
+    }
+
     async function deleteSite(repoName) {
       if(!confirm('Are you sure you want to permanently delete ' + repoName + '?')) return;
       try {

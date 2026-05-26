@@ -441,6 +441,13 @@ async function triggerAutonomousGen(category) {
   }
 }
 
+app.post('/api/force-generate', (req, res) => {
+  const { category } = req.body;
+  if (!['game', 'tool', 'random'].includes(category)) return res.status(400).json({ error: 'Invalid category' });
+  triggerAutonomousGen(category);
+  res.json({ success: true, message: `Started generating ${category}` });
+});
+
 setInterval(() => {
   const now = Date.now();
   ['game', 'tool', 'random'].forEach(cat => {
