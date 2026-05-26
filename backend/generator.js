@@ -206,8 +206,8 @@ async function generateSite(userPrompt = '', category = 'user', opts = {}) {
     : `Generate a unique ${category} website with ${style} aesthetics.`);
 
   const maxTokens = opts.complexity === 'rich' ? 6000 : opts.complexity === 'quick' ? 2500 : 4096;
-  console.log(`[Generator] 🤖 category=${category} | ${style} | ${font} | complexity=${opts.complexity||'standard'}`);
-  const raw    = await callAI(system, user, maxTokens);
+  console.log(`[Generator] 🤖 category=${category} | ${style} | ${font} | complexity=${opts.complexity||'standard'} | model=${opts.model||'default'}`);
+  const raw    = await callAI(system, user, maxTokens, opts.model);
   const parsed = extractJSON(raw);
 
   if (!parsed.html || parsed.html.length < 500) throw new Error('Generated HTML too short.');
@@ -338,9 +338,9 @@ function scheduleCategory(category) {
 
 // Generate — returns jobId immediately, runs async
 app.post('/api/generate', async (req, res) => {
-  const { prompt = '', category = 'user', style, font, palette, complexity, toggles } = req.body;
+  const { prompt = '', category = 'user', style, font, palette, complexity, toggles, model } = req.body;
   const job  = createJob();
-  const opts = { style, font, palette, complexity, toggles };
+  const opts = { style, font, palette, complexity, toggles, model };
   res.json({ jobId: job.id });
   runPipeline(prompt, category, opts, job).catch(err => {
     job.status = 'error';

@@ -12,13 +12,17 @@ const MODELS = [
  * @param {string} system  System prompt
  * @param {string} user    User message
  * @param {number} maxTokens
+ * @param {string} requestedModel Model requested by the user
  * @returns {Promise<string>} Raw content string from AI
  */
-async function callAI(system, user, maxTokens = 4096) {
+async function callAI(system, user, maxTokens = 4096, requestedModel = null) {
   const key = process.env.OPENROUTER_KEY;
   if (!key) throw new Error('OPENROUTER_KEY not set in .env');
 
-  for (const model of MODELS) {
+  // If a specific model is requested, try that first, then fallback
+  const modelsToTry = requestedModel ? [requestedModel, ...MODELS.filter(m => m !== requestedModel)] : MODELS;
+
+  for (const model of modelsToTry) {
     try {
       const res = await axios.post(
         'https://openrouter.ai/api/v1/chat/completions',
