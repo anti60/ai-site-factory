@@ -26,12 +26,48 @@ const FRONTEND = path.resolve(__dirname, '../frontend');
 app.use(express.static(FRONTEND));
 console.log(`[Server] 📂 Serving frontend from: ${FRONTEND}`);
 
+// ── Job tracking ──────────────────────────────────────────
+const jobs = new Map();
+
+function createJob() {
+  const id = Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+  const job = {
+    id,
+    status: 'running',   // running | done | error
+    stage: 0,            // 1=generating, 2=critiquing, 3=repairing, 4=deploying
+    stageLabel: 'Starting…',
+    stageDetail: '',
+    stageTimes: {},      // stage# → elapsed ms when that stage completed
+    startedAt: Date.now(),
+    elapsedMs: 0,
+    site: null,
+    error: null
+  };
+  jobs.set(id, job);
+  setTimeout(() => jobs.delete(id), 15 * 60 * 1000); // auto-clean after 15 min
+  return job;
+}
+
+function setStage(job, stage, label, detail = '') {
+  if (!job) return;
+  job.stage      = stage;
+  job.stageLabel = label;
+  job.stageDetail = detail;
+  job.elapsedMs  = Date.now() - job.startedAt;
+  console.log(`[Job ${job.id}] ▶ Stage ${stage}: ${label}${detail ? ' — ' + detail : ''}`);
+}
+
+function doneStage(job, stage) {
+  if (!job) return;
+  job.stageTimes[stage] = Date.now() - job.startedAt;
+}
+
 // ── Shared pools ──────────────────────────────────────────
 const STYLES = ['cyberpunk neon','brutalism','glassmorphism','minimalist editorial','luxury dark','sci-fi holographic','retro terminal','AI aesthetic','vaporwave','neobrutalism'];
 const FONTS  = ['Space Grotesk','Plus Jakarta Sans','DM Sans','Syne','Outfit','Inter','Manrope'];
 function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
 
-const BACK_BTN = `<a href="http://localhost:4000" id="__back_btn" style="position:fixed;bottom:20px;right:20px;z-index:99999;background:rgba(10,10,15,0.9);backdrop-filter:blur(10px);color:#58a6ff;border:1px solid rgba(88,166,255,0.4);padding:10px 18px;border-radius:50px;font-family:sans-serif;font-size:14px;font-weight:600;text-decoration:none;box-shadow:0 4px 20px rgba(0,0,0,0.5);">← AI Site Factory</a>`;
+const BACK_BTN = `<a href="https://ai-site-factory-green.vercel.app" id="__back_btn" style="position:fixed;bottom:20px;right:20px;z-index:99999;background:rgba(10,10,15,0.9);backdrop-filter:blur(10px);color:#58a6ff;border:1px solid rgba(88,166,255,0.4);padding:10px 18px;border-radius:50px;font-family:sans-serif;font-size:14px;font-weight:600;text-decoration:none;box-shadow:0 4px 20px rgba(0,0,0,0.5);">← AI Site Factory</a>`;
 
 // ── Category system prompts ───────────────────────────────
 const SYSTEM_PROMPTS = {
@@ -86,7 +122,7 @@ TOOL REQUIREMENTS:
 - Tool ideas: QR generator, password generator, weather app, pomodoro timer, calculator, note app, markdown previewer, expense tracker, unit converter, gradient generator, focus timer, color palette picker, JSON formatter, regex tester, word counter
 - Modern polished UI, smooth transitions, interactive feedback
 - Mobile responsive
-- May use free public APIs: wttr.in, api.coingecko.com, dog.ceo, etc.
+- May use free public APIs: wttr.in, api.coingecko.com, etc.
 
 FORBIDDEN: broken APIs, unfinished UI, fake buttons, authentication systems
 
@@ -118,7 +154,6 @@ async function generateSite(userPrompt = '', category = 'user', opts = {}) {
   const SITE_TYPES = ['SaaS landing page','AI startup','creative portfolio','gaming landing page','music platform','architecture studio','fashion brand','futuristic agency','cybersecurity company','productivity tool'];
   const type = pick(SITE_TYPES);
 
-  // Build extra instructions from user options
   const extras = [];
   if (opts.palette) {
     extras.push(`COLOR PALETTE: Use primary=${opts.palette.primary}, secondary=${opts.palette.secondary}, accent=${opts.palette.accent} as your CSS custom properties.`);
@@ -132,6 +167,10 @@ async function generateSite(userPrompt = '', category = 'user', opts = {}) {
     if (opts.toggles.darkonly)    extras.push('REQUIRED: Dark mode only — deep dark background, light text, no light theme.');
     if (opts.toggles.particles)   extras.push('REQUIRED: Include a canvas-based particle system for visual depth.');
     if (opts.toggles.canvas)      extras.push('REQUIRED: Use HTML5 Canvas for at least one major visual element or interactive graphic.');
+  }
+  // Tweak instructions if re-running on an existing site
+  if (opts.tweakPrompt) {
+    extras.push(`TWEAK INSTRUCTIONS: The user wants these specific changes: ${opts.tweakPrompt}`);
   }
   const extraInstructions = extras.length ? '\n\nUSER OVERRIDE REQUIREMENTS:\n' + extras.join('\n') : '';
 
@@ -151,51 +190,58 @@ async function generateSite(userPrompt = '', category = 'user', opts = {}) {
   const parsed = extractJSON(raw);
 
   if (!parsed.html || parsed.html.length < 500) throw new Error('Generated HTML too short.');
-  parsed.repoName = (parsed.repoName || `ai-${category}-${Date.now()}`)
-    .toLowerCase().replace(/[^a-z0-9-]/g, '-').replace(/-+/g, '-').slice(0, 64);
+
+  // If tweaking existing site, preserve its name
+  if (opts.existingSiteName) {
+    parsed.repoName = opts.existingSiteName;
+  } else {
+    parsed.repoName = (parsed.repoName || `ai-${category}-${Date.now()}`)
+      .toLowerCase().replace(/[^a-z0-9-]/g, '-').replace(/-+/g, '-').slice(0, 64);
+  }
 
   console.log(`[Generator] ✅ ${parsed.idea} → ${parsed.repoName}`);
   return { ...parsed, type, style, font, category };
 }
 
 // ── Full pipeline ─────────────────────────────────────────
-async function runPipeline(userPrompt = '', category = 'user', opts = {}) {
-  const log = [];
-  const emit = msg => { console.log(msg); log.push(msg); };
+async function runPipeline(userPrompt = '', category = 'user', opts = {}, job = null) {
+  setStage(job, 1, 'AI Generation', 'Building your website with AI…');
 
-  emit(`[Pipeline] ▶ Starting [${category.toUpperCase()}]…`);
   let site = await generateSite(userPrompt, category, opts);
-  emit(`[Pipeline] ✅ Idea: ${site.idea}`);
+  doneStage(job, 1);
 
+  setStage(job, 2, 'Critic Agent', `Scoring "${site.idea}" across 6 quality dimensions…`);
   const criticResult = await criticAndRepair(site.html, site.idea);
   site.html = criticResult.html;
-  emit(`[Pipeline] 📊 Score: ${criticResult.score}/10 | Verdict: ${criticResult.verdict.toUpperCase()}`);
+  doneStage(job, 2);
 
   if (criticResult.rejected) {
-    emit('[Pipeline] ⚠️  Rejected — retrying with new generation…');
+    setStage(job, 3, 'Auto Repair', `Score ${criticResult.score}/10 — Retrying with new generation…`);
     try {
       const retrySite = await generateSite(userPrompt, category, opts);
       const retry = await criticAndRepair(retrySite.html, retrySite.idea);
-      // Use retry result if it scores better, otherwise keep original
       if (retry.score > criticResult.score) {
         site = retrySite;
         site.html = retry.html;
         Object.assign(criticResult, retry);
-        emit(`[Pipeline] 🔁 Retry improved: ${retry.score}/10 | deploying`);
       } else {
-        emit(`[Pipeline] 🔁 Retry: ${retry.score}/10 — using best available output`);
-        criticResult.rejected = false; // force deploy best effort
+        criticResult.rejected = false;
       }
     } catch (retryErr) {
-      emit(`[Pipeline] ⚠️  Retry failed: ${retryErr.message} — deploying original`);
-      criticResult.rejected = false; // deploy original anyway
+      console.error(`[Pipeline] Retry failed: ${retryErr.message}`);
+      criticResult.rejected = false;
     }
+    doneStage(job, 3);
+  } else {
+    if (job) job.stageTimes[3] = null; // null = skipped
   }
 
-  const ghUser  = process.env.GITHUB_USER || 'anti60';
+  setStage(job, 4, 'Deploying', `Uploading "${site.repoName}" to GitHub…`);
+
+  const ghUser    = process.env.GITHUB_USER || 'anti60';
   const REPO_NAME = 'ai-site-factory';
-  const liveUrl = `/generated/${site.repoName}/index.html`;
-  const repoUrl = `https://github.com/${ghUser}/${REPO_NAME}/tree/main/frontend/generated/${site.repoName}`;
+  const liveUrl   = `/generated/${site.repoName}/index.html`;
+  const repoUrl   = `https://github.com/${ghUser}/${REPO_NAME}/tree/main/frontend/generated/${site.repoName}`;
 
   const metadata = {
     id:        site.repoName + '-' + Date.now(),
@@ -221,51 +267,87 @@ async function runPipeline(userPrompt = '', category = 'user', opts = {}) {
   const metaPath = path.join(genDir, 'sites.json');
   let sites = [];
   if (await fse.pathExists(metaPath)) sites = await fse.readJson(metaPath).catch(() => []);
-  sites.unshift(metadata);
+
+  // If tweaking, update existing entry; otherwise prepend
+  if (opts.existingSiteName) {
+    const idx = sites.findIndex(s => s.repoName === opts.existingSiteName);
+    if (idx >= 0) sites[idx] = metadata; else sites.unshift(metadata);
+  } else {
+    sites.unshift(metadata);
+  }
   await fse.writeJson(metaPath, sites, { spaces: 2 });
 
   await addRoute(metadata);
-
   await deployToGitHubAndVercel(site);
-  emit(`[Pipeline] ✅ Live: ${liveUrl}`);
-  emit('[Pipeline] ✅ Complete!');
-  return { ...metadata, log };
+
+  doneStage(job, 4);
+  if (job) {
+    job.status   = 'done';
+    job.site     = metadata;
+    job.elapsedMs = Date.now() - job.startedAt;
+    job.stageLabel = 'Complete!';
+    job.stageDetail = `Live at /generated/${site.repoName}/index.html`;
+  }
+
+  console.log(`[Pipeline] ✅ Live: ${liveUrl}`);
+  return { ...metadata, log: [] };
 }
 
-// ── Auto-scheduler for AI categories ─────────────────────
+// ── Auto-scheduler ────────────────────────────────────────
 const SCHEDULE_MS = {
-  game:   30 * 60 * 1000,   // every 30 min
-  tool:   45 * 60 * 1000,   // every 45 min
-  random: 60 * 60 * 1000,   // every 60 min
+  game:   30 * 60 * 1000,
+  tool:   45 * 60 * 1000,
+  random: 60 * 60 * 1000,
 };
 const NEXT_DEPLOY = {};
-
 function scheduleCategory(category) {
   const ms = SCHEDULE_MS[category];
   NEXT_DEPLOY[category] = Date.now() + ms;
   setTimeout(async () => {
     console.log(`[Scheduler] ⏰ Auto-generating ${category}…`);
     try { await runPipeline('', category); } catch(e) { console.error(`[Scheduler] ❌ ${category}: ${e.message}`); }
-    scheduleCategory(category); // reschedule
+    scheduleCategory(category);
   }, ms);
   console.log(`[Scheduler] ✅ ${category} scheduled every ${ms/60000}min`);
 }
-
 ['game','tool','random'].forEach(scheduleCategory);
 
 // ── API routes ────────────────────────────────────────────
+
+// Generate — returns jobId immediately, runs async
 app.post('/api/generate', async (req, res) => {
-  try {
-    const { prompt = '', category = 'user', style, font, palette, complexity, toggles } = req.body;
-    const opts = { style, font, palette, complexity, toggles };
-    const result = await runPipeline(prompt, category, opts);
-    res.json({ success: true, site: result });
-  } catch (err) {
+  const { prompt = '', category = 'user', style, font, palette, complexity, toggles } = req.body;
+  const job  = createJob();
+  const opts = { style, font, palette, complexity, toggles };
+  res.json({ jobId: job.id });
+  runPipeline(prompt, category, opts, job).catch(err => {
+    job.status = 'error';
+    job.error  = err.message;
     console.error('[API] ❌', err.message);
-    res.json({ success: false, error: err.message });
-  }
+  });
 });
 
+// Poll job status
+app.get('/api/status/:jobId', (req, res) => {
+  const job = jobs.get(req.params.jobId);
+  if (!job) return res.status(404).json({ error: 'Job not found' });
+  res.json(job);
+});
+
+// Tweak an existing site
+app.post('/api/tweak', async (req, res) => {
+  const { siteName, prompt = '', category = 'user' } = req.body;
+  if (!siteName) return res.status(400).json({ error: 'siteName is required' });
+  const job  = createJob();
+  const opts = { existingSiteName: siteName, tweakPrompt: prompt };
+  res.json({ jobId: job.id });
+  runPipeline(prompt, category, opts, job).catch(err => {
+    job.status = 'error';
+    job.error  = err.message;
+  });
+});
+
+// Sites list
 app.get('/api/sites', async (req, res) => {
   try {
     const metaPath = path.join(FRONTEND, 'generated', 'sites.json');
@@ -274,13 +356,13 @@ app.get('/api/sites', async (req, res) => {
   } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
-// Returns next scheduled deploy times for frontend timers
-app.get('/api/schedule', (req, res) => {
-  res.json(NEXT_DEPLOY);
-});
+// Schedule countdowns
+app.get('/api/schedule', (req, res) => res.json(NEXT_DEPLOY));
 
+// Health
 app.get('/api/health', (req, res) => res.json({ status: 'ok', ts: new Date().toISOString() }));
 
+// Fallback
 app.get('*', (req, res) => res.sendFile(path.join(FRONTEND, 'index.html')));
 
 app.listen(PORT, () => {

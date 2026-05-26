@@ -159,6 +159,49 @@ footer{position:relative;z-index:1;text-align:center;padding:2.5rem;border-top:1
 footer b{color:var(--accent);}
 
 @media(max-width:768px){nav{padding:.7rem 1rem;}.nav-links{display:none;}.stats-bar{gap:1.5rem;flex-wrap:wrap;}.hero{padding:4rem 1rem 2.5rem;}}
+
+/* ── PIPELINE TRACKER ── */
+.pipeline{margin-top:1.2rem;display:flex;flex-direction:column;gap:.5rem;}
+.pipe-stage{display:flex;align-items:center;gap:.9rem;background:rgba(0,0,0,.35);border:1px solid var(--border);border-radius:8px;padding:.75rem 1rem;transition:all .35s;}
+.pipe-stage.running{border-color:rgba(88,166,255,.45);background:rgba(88,166,255,.06);animation:pulse-border 1.5s infinite;}
+.pipe-stage.done{border-color:rgba(52,211,153,.35);background:rgba(52,211,153,.05);}
+.pipe-stage.skip{opacity:.45;}
+.pipe-stage.err{border-color:rgba(248,113,113,.4);background:rgba(248,113,113,.05);}
+@keyframes pulse-border{0%,100%{box-shadow:0 0 0 0 rgba(88,166,255,.2);}50%{box-shadow:0 0 0 4px rgba(88,166,255,0);}}
+.ps-icon{font-size:1.25rem;width:26px;text-align:center;flex-shrink:0;}
+.ps-body{flex:1;min-width:0;}
+.ps-name{font-size:.85rem;font-weight:700;color:#fff;}
+.ps-detail{font-size:.75rem;color:var(--muted);margin-top:.1rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ps-time{font-size:.75rem;font-family:'JetBrains Mono',monospace;flex-shrink:0;color:var(--muted);}
+.pipe-stage.running .ps-time{color:var(--accent);}
+.pipe-stage.done .ps-time{color:var(--p3);}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spin{display:inline-block;width:13px;height:13px;border:2px solid rgba(88,166,255,.25);border-top-color:var(--accent);border-radius:50%;animation:spin .75s linear infinite;}
+.pipe-footer{display:flex;justify-content:space-between;align-items:center;margin-top:.5rem;font-size:.78rem;font-family:'JetBrains Mono',monospace;color:var(--muted);}
+.pipe-result{margin-top:.8rem;padding:.85rem 1.1rem;background:rgba(52,211,153,.07);border:1px solid rgba(52,211,153,.25);border-radius:8px;display:none;font-size:.88rem;}
+.pipe-result.show{display:block;}
+.pipe-result a{color:var(--p3);font-weight:700;text-decoration:underline;}
+
+/* ── TWEAK MODAL ── */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.72);backdrop-filter:blur(10px);z-index:2000;display:none;align-items:center;justify-content:center;padding:1rem;}
+.modal-bg.open{display:flex;}
+.modal-box{background:#0c0c18;border:1px solid var(--border);border-radius:var(--r);padding:2rem;width:100%;max-width:500px;box-shadow:0 32px 64px rgba(0,0,0,.8);}
+.modal-h{font-size:1.05rem;font-weight:800;color:#fff;margin-bottom:.25rem;}
+.modal-sub{font-size:.8rem;color:var(--muted);margin-bottom:1.1rem;}
+.modal-btns{display:flex;gap:.6rem;margin-top:1rem;}
+.modal-btns button{flex:1;padding:.7rem;border-radius:8px;font-weight:700;font-size:.88rem;cursor:pointer;border:none;font-family:'Outfit',sans-serif;transition:all .2s;}
+.mbtn-cancel{background:rgba(255,255,255,.06);color:var(--muted);}
+.mbtn-cancel:hover{background:rgba(255,255,255,.1);}
+.mbtn-tweak{background:linear-gradient(135deg,var(--p2),var(--accent));color:#fff;}
+.mbtn-tweak:hover{opacity:.88;}
+
+/* ── TWEAK btn on cards ── */
+.gfoot{padding:.8rem 1.1rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
+.gfoot-left{display:flex;align-items:center;gap:.5rem;}
+.gfoot a{font-size:.82rem;color:var(--accent);font-weight:600;}
+.gfoot a:hover{text-decoration:underline;}
+.tweak-btn{font-size:.72rem;color:var(--p2);font-weight:700;background:rgba(167,139,250,.08);border:1px solid rgba(167,139,250,.2);padding:.22rem .55rem;border-radius:5px;cursor:pointer;transition:all .18s;white-space:nowrap;}
+.tweak-btn:hover{background:rgba(167,139,250,.18);border-color:var(--p2);}
 </style>
 </head>
 <body>
@@ -312,10 +355,15 @@ footer b{color:var(--accent);}
 
     <hr class="divider">
     <button class="btn" id="genBtn">⚡ Generate &amp; Deploy</button>
-    <div class="terminal" id="terminal">
-      <div class="t-dim">> System ready. AI Core online.</div>
-      <div class="t-dim">> Set your options and click Generate.</div>
+
+    <div class="pipeline" id="pipeline" style="display:none">
+      <div class="pipe-stage" id="ps1"><div class="ps-icon" id="pi1">🤖</div><div class="ps-body"><div class="ps-name">AI Generation</div><div class="ps-detail" id="pd1">Waiting…</div></div><div class="ps-time" id="pt1">–</div></div>
+      <div class="pipe-stage" id="ps2"><div class="ps-icon" id="pi2">⚖️</div><div class="ps-body"><div class="ps-name">Critic Agent</div><div class="ps-detail" id="pd2">Waiting…</div></div><div class="ps-time" id="pt2">–</div></div>
+      <div class="pipe-stage" id="ps3"><div class="ps-icon" id="pi3">🔧</div><div class="ps-body"><div class="ps-name">Auto Repair</div><div class="ps-detail" id="pd3">Waiting…</div></div><div class="ps-time" id="pt3">–</div></div>
+      <div class="pipe-stage" id="ps4"><div class="ps-icon" id="pi4">📡</div><div class="ps-body"><div class="ps-name">Deploy to GitHub</div><div class="ps-detail" id="pd4">Waiting…</div></div><div class="ps-time" id="pt4">–</div></div>
     </div>
+    <div class="pipe-footer" id="pipeFooter" style="display:none"><span id="pipeStatus">Running…</span><span id="pipeElapsed">0s</span></div>
+    <div class="pipe-result" id="pipeResult"></div>
   </div>
 </section>
 
@@ -371,6 +419,20 @@ footer b{color:var(--accent);}
 
 <footer>Built with ⚡ by <b>AI Site Factory</b> — Fully Autonomous Generation Engine</footer>
 
+<!-- TWEAK MODAL -->
+<div class="modal-bg" id="tweakModal">
+  <div class="modal-box">
+    <div class="modal-h" id="tweakTitle">✏️ Tweak Site</div>
+    <div class="modal-sub" id="tweakIdea"></div>
+    <span class="gen-lbl">What would you like to change?</span>
+    <textarea id="tweakPrompt" placeholder="e.g. Fix the mobile layout, change colors to dark blue, add a contact form…" style="min-height:90px;margin-top:.4rem;"></textarea>
+    <div class="modal-btns">
+      <button class="mbtn-cancel" id="tweakCancelBtn">Cancel</button>
+      <button class="mbtn-tweak" id="tweakRunBtn">⚡ Re-Generate & Deploy</button>
+    </div>
+  </div>
+</div>
+
 <script>
 // ── Canvas particles ─────────────────────────────────────
 const API = 'https://ai-site-factory.onrender.com';
@@ -407,7 +469,7 @@ function buildCards(sites){
         <div class="gmeta">${s.style||''}</div>
       </div>
       <div class="gfoot">
-        <a href="${url}" target="_blank">Open Live →</a>
+        <div class="gfoot-left"><a href="${url}" target="_blank">Open Live →</a><button class="tweak-btn" onclick="openTweak('${s.repoName}','${(s.idea||'').replace(/'/g,"\\'")}','${s.category||'user'}')">✏️ Tweak</button></div>
         <span class="gdate">${date}</span>
       </div>
     </div>`;
@@ -525,31 +587,123 @@ function getPalette(){
   return map[selPalette]||map.midnight;
 }
 
+// ── Pipeline helpers ────────────────────────────────────
+const STAGE_META=[
+  null,
+  {id:'ps1',icon:'pi1',detail:'pd1',time:'pt1',doneIcon:'✅',runIcon:'<span class="spin"></span>'},
+  {id:'ps2',icon:'pi2',detail:'pd2',time:'pt2',doneIcon:'✅',runIcon:'<span class="spin"></span>'},
+  {id:'ps3',icon:'pi3',detail:'pd3',time:'pt3',doneIcon:'✅',runIcon:'<span class="spin"></span>'},
+  {id:'ps4',icon:'pi4',detail:'pd4',time:'pt4',doneIcon:'✅',runIcon:'<span class="spin"></span>'},
+];
+function fmt(ms){if(!ms&&ms!==0)return'–';const s=(ms/1000).toFixed(1);return s+'s';}
+function resetPipeline(){
+  for(let i=1;i<=4;i++){
+    const m=STAGE_META[i];
+    document.getElementById(m.id).className='pipe-stage';
+    document.getElementById(m.icon).innerHTML=['🤖','⚖️','🔧','📡'][i-1];
+    document.getElementById(m.detail).textContent='Waiting…';
+    document.getElementById(m.time).textContent='–';
+  }
+  document.getElementById('pipeResult').className='pipe-result';
+  document.getElementById('pipeResult').innerHTML='';
+  document.getElementById('pipeFooter').style.display='none';
+  document.getElementById('pipeStatus').textContent='Running…';
+}
+function applyJob(job){
+  for(let i=1;i<=4;i++){
+    const m=STAGE_META[i];
+    const el=document.getElementById(m.id);
+    const elapsed=job.stageTimes[i];
+    if(i<job.stage||job.stageTimes[i]!==undefined){
+      if(job.stageTimes[i]===null){el.className='pipe-stage skip';document.getElementById(m.icon).textContent='⏭';document.getElementById(m.detail).textContent='Skipped (no repair needed)';document.getElementById(m.time).textContent='–';}
+      else{el.className='pipe-stage done';document.getElementById(m.icon).textContent='✅';document.getElementById(m.time).textContent=fmt(job.stageTimes[i]);}
+    }else if(i===job.stage&&job.status==='running'){
+      el.className='pipe-stage running';document.getElementById(m.icon).innerHTML=m.runIcon;document.getElementById(m.detail).textContent=job.stageDetail||'';
+    }else if(job.status==='error'&&i===job.stage){
+      el.className='pipe-stage err';document.getElementById(m.icon).textContent='❌';document.getElementById(m.detail).textContent=job.error||'Error';
+    }
+  }
+  document.getElementById('pipeElapsed').textContent=fmt(job.elapsedMs);
+  if(job.status==='done'){
+    const s=job.site;
+    document.getElementById('pipeStatus').textContent='✅ Complete!';
+    const vercelBase='https://ai-site-factory-green.vercel.app';
+    document.getElementById('pipeResult').innerHTML=`<b>🚀 Live:</b> <a href="${vercelBase}/generated/${s.repoName}/index.html" target="_blank">${s.repoName} →</a> &nbsp;|&nbsp; ⭐ ${s.score}/10 &nbsp;|&nbsp; ${(s.verdict||'').toUpperCase()}`;
+    document.getElementById('pipeResult').className='pipe-result show';
+  }else if(job.status==='error'){
+    document.getElementById('pipeStatus').textContent='❌ Failed';
+  }
+}
+async function pollJob(jobId,onDone){
+  const interval=setInterval(async()=>{
+    try{
+      const job=await fetch(`${API}/api/status/${jobId}`).then(r=>r.json());
+      applyJob(job);
+      if(job.status==='done'||job.status==='error'){clearInterval(interval);if(onDone)onDone(job);}
+    }catch(e){console.warn('poll err',e);}
+  },1000);
+}
+
 // ── Generator ────────────────────────────────────────────
 const btn=document.getElementById('genBtn');
-const term=document.getElementById('terminal');
-function log(msg,cls=''){const d=document.createElement('div');if(cls)d.className=cls;d.innerHTML='> '+msg;term.appendChild(d);term.scrollTop=term.scrollHeight;}
 btn.addEventListener('click',async()=>{
   const prompt=document.getElementById('prompt').value.trim();
   const font=document.getElementById('fontPicker').value;
-  const palette=getPalette();
-  const toggles=getToggles();
-  const payload={prompt,category:selCat,style:selStyle||undefined,font:font||undefined,palette,complexity:selCx,toggles};
-  btn.disabled=true;btn.innerHTML='⚡ Pipeline Running…';term.innerHTML='';
-  log(`Category: <b>${selCat}</b> | Style: <b>${selStyle||'AI picks'}</b> | Theme: <b>${selPalette}</b>`,'t-dim');
-  log('Sending to autonomous pipeline…','t-dim');
+  const payload={prompt,category:selCat,style:selStyle||undefined,font:font||undefined,palette:getPalette(),complexity:selCx,toggles:getToggles()};
+  btn.disabled=true;btn.innerHTML='⚡ Pipeline Running…';
+  resetPipeline();
+  document.getElementById('pipeline').style.display='flex';
+  document.getElementById('pipeFooter').style.display='flex';
+  // Apply initial running state for stage 1
+  document.getElementById('ps1').className='pipe-stage running';
+  document.getElementById('pi1').innerHTML='<span class="spin"></span>';
+  document.getElementById('pd1').textContent='Building your website with AI…';
   try{
-    const data=await fetch(`${API}/api/generate`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}).then(r=>r.json());
-    if(data.success){
-      const s=data.site;
-      log(`Step 1/4 ✅ Generated: <b>${s.idea}</b>`,'t-ok');
-      log(`Step 2/4 ✅ Critic: ${s.score}/10 | ${(s.verdict||'').toUpperCase()}`,'t-ok');
-      log(`Step 3/4 ✅ Committed to repo.`,'t-ok');
-      log(`Step 4/4 ✅ <a href="/generated/${s.repoName}/index.html" target="_blank" style="color:var(--accent);text-decoration:underline;">View: ${s.repoName} →</a>`,'t-hi');
-      setTimeout(loadGallery,1200);
-    }else{log('❌ Error: '+data.error,'t-err');}
-  }catch(e){log('❌ Network error: '+e.message,'t-err');}
-  btn.disabled=false;btn.innerHTML='⚡ Generate &amp; Deploy';
+    const {jobId}=await fetch(`${API}/api/generate`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}).then(r=>r.json());
+    pollJob(jobId,job=>{
+      btn.disabled=false;btn.innerHTML='⚡ Generate &amp; Deploy';
+      if(job.status==='done') setTimeout(loadGallery,1500);
+    });
+  }catch(e){
+    document.getElementById('pipeStatus').textContent='❌ Network error: '+e.message;
+    btn.disabled=false;btn.innerHTML='⚡ Generate &amp; Deploy';
+  }
+});
+
+// ── Tweak Modal ──────────────────────────────────────────
+let tweakSite=null,tweakCat='user';
+function openTweak(siteName,idea,category){
+  tweakSite=siteName;tweakCat=category||'user';
+  document.getElementById('tweakTitle').textContent='✏️ Tweak: '+siteName;
+  document.getElementById('tweakIdea').textContent=idea;
+  document.getElementById('tweakPrompt').value='';
+  document.getElementById('tweakModal').classList.add('open');
+}
+function closeTweak(){document.getElementById('tweakModal').classList.remove('open');}
+document.getElementById('tweakCancelBtn').addEventListener('click',closeTweak);
+document.getElementById('tweakModal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeTweak();});
+document.getElementById('tweakRunBtn').addEventListener('click',async()=>{
+  const prompt=document.getElementById('tweakPrompt').value.trim();
+  closeTweak();
+  resetPipeline();
+  document.getElementById('generate').scrollIntoView({behavior:'smooth'});
+  document.getElementById('pipeline').style.display='flex';
+  document.getElementById('pipeFooter').style.display='flex';
+  document.getElementById('pipeStatus').textContent=`Tweaking ${tweakSite}…`;
+  btn.disabled=true;btn.innerHTML='⚡ Tweaking…';
+  document.getElementById('ps1').className='pipe-stage running';
+  document.getElementById('pi1').innerHTML='<span class="spin"></span>';
+  document.getElementById('pd1').textContent='Re-generating with your changes…';
+  try{
+    const {jobId}=await fetch(`${API}/api/tweak`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({siteName:tweakSite,prompt,category:tweakCat})}).then(r=>r.json());
+    pollJob(jobId,job=>{
+      btn.disabled=false;btn.innerHTML='⚡ Generate &amp; Deploy';
+      if(job.status==='done') setTimeout(loadGallery,1500);
+    });
+  }catch(e){
+    document.getElementById('pipeStatus').textContent='❌ Error: '+e.message;
+    btn.disabled=false;btn.innerHTML='⚡ Generate &amp; Deploy';
+  }
 });
 </script>
 </body>
