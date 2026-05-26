@@ -31,8 +31,8 @@ async function deployToGitHubAndVercel(site) {
       await exec(`git remote add origin "${remoteUrl}"`);
     }
 
-    // Stage the generated directory (relative path from repo root)
-    await exec(`git add frontend/generated`);
+    // Stage the generated directory and index.html (relative path from repo root)
+    await exec(`git add frontend/`);
 
     // Set git identity (required when no global config exists)
     await exec(`git config user.name "${GITHUB_USER}"`);
@@ -47,8 +47,8 @@ async function deployToGitHubAndVercel(site) {
       console.log(`[Deployer] ℹ️  Nothing new to commit — already up to date.`);
     }
 
-    // Push to GitHub → triggers Vercel auto-deploy
-    await exec(`git push origin main`);
+    // Push HEAD to main because Render checks out a detached HEAD
+    await exec(`git push origin HEAD:main`);
     console.log(`[Deployer] 🚀 Pushed to GitHub — Vercel deploy triggered!`);
 
   } catch (err) {
