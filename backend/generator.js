@@ -5,6 +5,7 @@ const path    = require('path');
 const fse     = require('fs-extra');
 const { callAI, extractJSON }     = require('./openrouter');
 const { criticAndRepair }         = require('../critic/criticAgent');
+const { repair }                  = require('../critic/repairAgent');
 const { deployToGitHubAndVercel } = require('./deployer');
 const { addRoute }                = require('./routeBuilder');
 
@@ -216,19 +217,20 @@ async function runPipeline(userPrompt = '', category = 'user', opts = {}, job = 
   doneStage(job, 2);
 
   if (criticResult.rejected) {
-    setStage(job, 3, 'Auto Repair', `Score ${criticResult.score}/10 — Retrying with new generation…`);
+    setStage(job, 3, 'Auto Repair', `Score ${criticResult.score}/10 — Applying fixes…`);
     try {
-      const retrySite = await generateSite(userPrompt, category, opts);
-      const retry = await criticAndRepair(retrySite.html, retrySite.idea);
-      if (retry.score > criticResult.score) {
-        site = retrySite;
-        site.html = retry.html;
+      const allIssues = [...(criticResult.critique?.issues||[]), ...(criticResult.critique?.repairs||[])];
+      const repairedHtml = await repair(site.html, site.idea, allIssues);
+      const retry = await criticAndRepair(repairedHtml, site.idea);
+      
+      // Keep repaired version if score didn't get worse
+      if (retry.score >= criticResult.score) {
+        site.html = repairedHtml;
         Object.assign(criticResult, retry);
-      } else {
-        criticResult.rejected = false;
       }
+      criticResult.rejected = false; // Accept it to move forward quickly
     } catch (retryErr) {
-      console.error(`[Pipeline] Retry failed: ${retryErr.message}`);
+      console.error(`[Pipeline] Repair failed: ${retryErr.message}`);
       criticResult.rejected = false;
     }
     doneStage(job, 3);

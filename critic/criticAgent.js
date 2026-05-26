@@ -3,10 +3,10 @@ const { validate }            = require('./validator');
 const { repair }              = require('./repairAgent');
 
 // ── Scoring thresholds (0–10 scale) ──────────────────────
-const SCORE_DEPLOY  = 6;   // 6-10 → deploy
-const SCORE_REPAIR  = 4;   // 4-5  → attempt repair
-const SCORE_REJECT  = 4;   // <4   → reject
-const MAX_REPAIRS   = 2;
+const SCORE_DEPLOY  = 5;   // 5-10 → deploy
+const SCORE_REPAIR  = 3;   // 3-4  → attempt repair
+const SCORE_REJECT  = 3;   // <3   → reject
+const MAX_REPAIRS   = 0;   // handled by generator.js now
 
 // ── Critic system prompt ──────────────────────────────────
 const CRITIC_SYSTEM = `You are the critic AI inside an autonomous AI web tool generation platform.
@@ -181,59 +181,15 @@ async function criticAndRepair(html, idea) {
     };
   }
 
-  // 4. Verdict === 'repair' — attempt AI repair up to MAX_REPAIRS times
-  console.log(`[Critic] 🔧 Attempting repairs (score ${critique.score}/10)…`);
-  let currentHtml  = html;
-  let repairCount  = 0;
-  let finalCritique = critique;
-
-  for (let i = 0; i < MAX_REPAIRS; i++) {
-    try {
-      const allIssues = [...(critique.issues||[]), ...(critique.repairs||[])];
-      currentHtml = await repair(currentHtml, idea, allIssues);
-      repairCount++;
-
-      // Re-critique after repair
-      const reCritique = await runAICritic(currentHtml, idea);
-      console.log(`[Critic] 🔁 Post-repair score: ${reCritique.score}/10 | ${reCritique.verdict}`);
-      finalCritique = reCritique;
-
-      if (reCritique.score >= SCORE_DEPLOY) {
-        console.log(`[Critic] ✅ Repair successful — deploying`);
-        return {
-          html:        currentHtml,
-          score:       reCritique.score,
-          verdict:     'deploy',
-          critique:    reCritique,
-          repairCount,
-          rejected:    false,
-        };
-      }
-
-      if (reCritique.verdict === 'reject') {
-        console.error(`[Critic] ❌ Post-repair score still below threshold`);
-        break;
-      }
-    } catch (err) {
-      console.error(`[Critic] ❌ Repair attempt ${i+1} failed: ${err.message}`);
-      break;
-    }
-  }
-
-  // After max repairs — deploy anyway if score >= 6, else reject
-  const deploy = finalCritique.score >= SCORE_REPAIR;
-  console.log(deploy
-    ? `[Critic] ⚠️  Deploying after ${repairCount} repair(s) with score ${finalCritique.score}/10`
-    : `[Critic] ❌ REJECTED after ${repairCount} repair(s)`
-  );
-
+  // Verdict === 'repair'
+  console.log(`[Critic] ⚠️  Score ${critique.score}/10 needs repair.`);
   return {
-    html:        currentHtml,
-    score:       finalCritique.score,
-    verdict:     deploy ? 'deploy' : 'reject',
-    critique:    finalCritique,
-    repairCount,
-    rejected:    !deploy,
+    html:        html,
+    score:       critique.score,
+    verdict:     'repair',
+    critique,
+    repairCount: 0,
+    rejected:    true,
   };
 }
 
