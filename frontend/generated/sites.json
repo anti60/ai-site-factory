@@ -1,5 +1,29 @@
 [
   {
+    "id": "color-palette-generator-1779821836628",
+    "idea": "A simple color palette generator that creates random color schemes.",
+    "repoName": "color-palette-generator",
+    "category": "tool",
+    "type": "futuristic agency",
+    "style": "sci-fi holographic",
+    "font": "Space Grotesk",
+    "repoUrl": "https://github.com/anti60/ai-site-factory/tree/main/frontend/generated/color-palette-generator",
+    "liveUrl": "/generated/color-palette-generator/index.html",
+    "score": 7,
+    "verdict": "repair",
+    "repairs": 0,
+    "critique": "The tool is functional and addresses a real problem, but it needs several usability and design improvements for a better user experience.",
+    "dimensions": {
+      "usefulness": 8,
+      "design": 7,
+      "responsiveness": 7,
+      "originality": 6,
+      "usability": 8,
+      "performance": 7
+    },
+    "createdAt": "2026-05-26T18:57:16.628Z"
+  },
+  {
     "id": "minimalist-endless-runner-1779820969915",
     "idea": "A minimalist endless runner where players avoid obstacles and collect stars while the speed gradually increases.",
     "repoName": "minimalist-endless-runner",
