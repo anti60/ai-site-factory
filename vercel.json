@@ -9,6 +9,10 @@
     {
       "source": "/api/:path*",
       "destination": "https://ai-site-factory.onrender.com/api/:path*"
+    },
+    {
+      "source": "/generated/:path*",
+      "destination": "https://ai-site-factory.onrender.com/generated/:path*"
     }
   ]
 }
