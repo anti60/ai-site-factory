@@ -415,7 +415,42 @@ app.get('/api/sites', async (req, res) => {
 });
 
 // Schedule countdowns
+const NEXT_DEPLOY = {
+  game: Date.now() + 25 * 60 * 1000, // 25 mins
+  tool: Date.now() + 45 * 60 * 1000, // 45 mins
+  random: Date.now() + 65 * 60 * 1000 // 65 mins
+};
+
 app.get('/api/schedule', (req, res) => res.json(NEXT_DEPLOY));
+
+// ── Autonomous Generation Engine ──────────────────────────
+async function triggerAutonomousGen(category) {
+  console.log(`[AutoEngine] 🤖 Triggering autonomous generation for: ${category}`);
+  let prompt = '';
+  if (category === 'game') prompt = 'Create a fun, highly interactive browser game with smooth mechanics.';
+  else if (category === 'tool') prompt = 'Create a highly useful, visually appealing browser utility tool that solves a real daily problem.';
+  else prompt = 'Create a highly creative, experimental, and visually stunning interactive web experience.';
+
+  try {
+    const job = createJob();
+    // (job, userPrompt, style, palette, category, complexity, model)
+    await runPipeline(job, prompt, 'AI aesthetic', 'midnight', category, 'standard', 'openai/gpt-4o-mini');
+    console.log(`[AutoEngine] ✅ Successfully auto-generated and deployed ${category} (Job: ${job.id})`);
+  } catch(e) {
+    console.error(`[AutoEngine] ❌ Failed to generate ${category}:`, e.message);
+  }
+}
+
+setInterval(() => {
+  const now = Date.now();
+  ['game', 'tool', 'random'].forEach(cat => {
+    if (now >= NEXT_DEPLOY[cat]) {
+      triggerAutonomousGen(cat);
+      // Reset timer: random between 45 and 120 minutes
+      NEXT_DEPLOY[cat] = now + (Math.floor(Math.random() * 75) + 45) * 60 * 1000;
+    }
+  });
+}, 10000); // Check every 10s
 
 // Health
 app.get('/api/health', (req, res) => res.json({ status: 'ok', ts: new Date().toISOString() }));
