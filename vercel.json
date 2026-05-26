@@ -1,7 +1,14 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "name": "ai-site-factory",
   "buildCommand": null,
   "outputDirectory": "frontend",
   "cleanUrls": true,
-  "trailingSlash": false
+  "trailingSlash": false,
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://ai-site-factory.onrender.com/api/:path*"
+    }
+  ]
 }
