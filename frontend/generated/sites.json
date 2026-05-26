@@ -1,5 +1,29 @@
 [
   {
+    "id": "video-chat-platform-1779819758622",
+    "idea": "A fun and interactive video chat platform with customizable avatars and engaging features.",
+    "repoName": "video-chat-platform",
+    "category": "user",
+    "type": "music platform",
+    "style": "glassmorphism",
+    "font": "Inter",
+    "repoUrl": "https://github.com/anti60/ai-site-factory/tree/main/frontend/generated/video-chat-platform",
+    "liveUrl": "/generated/video-chat-platform/index.html",
+    "score": 3,
+    "verdict": "reject",
+    "repairs": 0,
+    "critique": "The tool is fundamentally non-functional and lacks essential features for a video chat platform.",
+    "dimensions": {
+      "usefulness": 2,
+      "design": 5,
+      "responsiveness": 4,
+      "originality": 3,
+      "usability": 4,
+      "performance": 4
+    },
+    "createdAt": "2026-05-26T18:22:38.622Z"
+  },
+  {
     "id": "password-generator-1779815554869",
     "idea": "Generate secure passwords easily",
     "repoName": "password-generator",
