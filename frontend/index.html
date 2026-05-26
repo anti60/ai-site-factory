@@ -52,15 +52,67 @@ nav{position:sticky;top:0;z-index:100;display:flex;justify-content:space-between
 .cd-badge{background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.25);color:var(--p3);padding:.3rem .8rem;border-radius:6px;font-weight:700;}
 
 /* GENERATOR BOX */
-.gen-wrap{max-width:780px;margin:0 auto;background:var(--panel);backdrop-filter:blur(20px);border:1px solid var(--border);border-radius:var(--r);padding:2rem;box-shadow:0 20px 50px rgba(0,0,0,.5);}
-.gen-lbl{font-size:.85rem;color:var(--muted);margin-bottom:.5rem;display:block;}
-textarea{width:100%;background:rgba(0,0,0,.5);border:1px solid var(--border);color:#fff;padding:1rem;border-radius:8px;font-family:'Outfit',sans-serif;font-size:.95rem;resize:vertical;min-height:90px;outline:none;transition:border-color .2s;}
+.gen-wrap{max-width:900px;margin:0 auto;background:var(--panel);backdrop-filter:blur(20px);border:1px solid var(--border);border-radius:var(--r);padding:2rem;box-shadow:0 20px 50px rgba(0,0,0,.5);}
+.gen-lbl{font-size:.8rem;color:var(--muted);margin-bottom:.5rem;display:block;text-transform:uppercase;letter-spacing:.05em;font-weight:600;}
+textarea{width:100%;background:rgba(0,0,0,.5);border:1px solid var(--border);color:#fff;padding:1rem;border-radius:8px;font-family:'Outfit',sans-serif;font-size:.95rem;resize:vertical;min-height:80px;outline:none;transition:border-color .2s;}
 textarea:focus{border-color:var(--accent);}
-#genBtn{width:100%;margin-top:.8rem;justify-content:center;font-size:1rem;padding:1rem;background:linear-gradient(135deg,var(--accent),var(--p2));color:#fff;border-radius:8px;box-shadow:0 0 25px rgba(88,166,255,.25);}
-#genBtn:hover:not(:disabled){transform:translateY(-2px);}
+#genBtn{width:100%;margin-top:.8rem;justify-content:center;font-size:1rem;padding:1rem;background:linear-gradient(135deg,var(--accent),var(--p2));color:#fff;border-radius:8px;box-shadow:0 0 25px rgba(88,166,255,.25);border:none;cursor:pointer;font-family:'Outfit',sans-serif;font-weight:700;transition:all .2s;}
+#genBtn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 0 40px rgba(88,166,255,.4);}
 #genBtn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
-.terminal{background:#000;border:1px solid rgba(88,166,255,.12);border-radius:8px;padding:1rem;font-family:'JetBrains Mono',monospace;font-size:.82rem;height:180px;overflow-y:auto;margin-top:1.2rem;line-height:1.7;}
+.terminal{background:#000;border:1px solid rgba(88,166,255,.12);border-radius:8px;padding:1rem;font-family:'JetBrains Mono',monospace;font-size:.82rem;height:160px;overflow-y:auto;margin-top:1.2rem;line-height:1.7;}
 .t-dim{color:var(--muted)}.t-ok{color:var(--p3)}.t-hi{color:var(--accent)}.t-err{color:#f87171;}
+/* CATEGORY TABS */
+.cat-tabs{display:flex;gap:.5rem;margin-bottom:1.4rem;flex-wrap:wrap;}
+.cat-tab{padding:.45rem 1rem;border-radius:50px;font-size:.82rem;font-weight:700;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--muted);transition:all .2s;font-family:'Outfit',sans-serif;}
+.cat-tab:hover{border-color:var(--accent);color:#fff;}
+.cat-tab.active{background:linear-gradient(135deg,var(--accent),var(--p2));border-color:transparent;color:#fff;box-shadow:0 0 15px rgba(88,166,255,.3);}
+/* OPTION ROWS */
+.opt-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;}
+@media(max-width:600px){.opt-grid{grid-template-columns:1fr;}}
+.opt-row{margin-bottom:1rem;}
+.opt-chips{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.4rem;}
+.chip{padding:.3rem .75rem;border-radius:6px;font-size:.78rem;font-weight:600;cursor:pointer;border:1px solid var(--border);background:rgba(255,255,255,.03);color:var(--muted);transition:all .18s;white-space:nowrap;}
+.chip:hover{border-color:var(--accent);color:#fff;}
+.chip.active{border-color:transparent;color:#000;font-weight:700;}
+.chip-cyber.active{background:#ff2d78;box-shadow:0 0 10px rgba(255,45,120,.4);}
+.chip-glass.active{background:rgba(130,200,255,.7);}
+.chip-luxury.active{background:#c9a84c;}
+.chip-brute.active{background:#f0f0f0;color:#000;}
+.chip-vapor.active{background:linear-gradient(90deg,#ff71ce,#01cdfe);}
+.chip-minimal.active{background:#e2e8f0;color:#000;}
+.chip-scifi.active{background:#00f5d4;color:#000;}
+.chip-retro.active{background:#39ff14;color:#000;}
+.chip-neo.active{background:#ffd60a;color:#000;}
+.chip-ai.active{background:linear-gradient(90deg,var(--accent),var(--p2));}
+/* PALETTE CHIPS */
+.palette-chip{width:28px;height:28px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:all .18s;position:relative;flex-shrink:0;}
+.palette-chip.active{border-color:#fff;transform:scale(1.2);box-shadow:0 0 8px rgba(255,255,255,.4);}
+.palette-row{display:flex;align-items:center;gap:.5rem;margin-top:.5rem;flex-wrap:wrap;}
+/* FONT SELECT */
+select.gen-select{background:rgba(0,0,0,.5);border:1px solid var(--border);color:#fff;padding:.5rem .8rem;border-radius:8px;font-family:'Outfit',sans-serif;font-size:.88rem;outline:none;cursor:pointer;transition:border-color .2s;width:100%;}
+select.gen-select:focus{border-color:var(--accent);}
+/* TOGGLES */
+.toggle-row{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:.4rem;}
+.toggle-chip{display:flex;align-items:center;gap:.35rem;padding:.3rem .8rem;border-radius:50px;font-size:.78rem;font-weight:600;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--muted);transition:all .2s;user-select:none;}
+.toggle-chip input{display:none;}
+.toggle-chip.on{background:rgba(52,211,153,.1);border-color:rgba(52,211,153,.4);color:var(--p3);}
+/* COMPLEXITY */
+.complexity-row{display:flex;gap:.4rem;margin-top:.4rem;}
+.cx-btn{flex:1;padding:.4rem;border-radius:6px;font-size:.78rem;font-weight:700;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--muted);transition:all .18s;font-family:'Outfit',sans-serif;}
+.cx-btn:hover{border-color:var(--accent);color:#fff;}
+.cx-btn.active{background:rgba(88,166,255,.15);border-color:var(--accent);color:var(--accent);}
+/* CUSTOM COLOR */
+.custom-colors{display:none;gap:.5rem;align-items:center;margin-top:.5rem;flex-wrap:wrap;}
+.custom-colors.show{display:flex;}
+.custom-colors label{font-size:.75rem;color:var(--muted);}
+.custom-colors input[type=color]{width:36px;height:28px;border:1px solid var(--border);background:transparent;cursor:pointer;border-radius:4px;padding:2px;}
+.divider{border:none;border-top:1px solid var(--border);margin:1rem 0;}
+.collapsible-opts{overflow:hidden;max-height:0;transition:max-height .4s ease;}
+.collapsible-opts.open{max-height:600px;}
+.adv-toggle{display:flex;align-items:center;gap:.4rem;cursor:pointer;font-size:.82rem;color:var(--muted);margin-bottom:.5rem;user-select:none;border:none;background:none;font-family:'Outfit',sans-serif;padding:0;}
+.adv-toggle:hover{color:#fff;}
+.adv-chevron{transition:transform .3s;display:inline-block;}
+.adv-toggle.open .adv-chevron{transform:rotate(180deg);}
 
 /* GALLERY GRID */
 .g-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:1.5rem;max-width:1300px;margin:0 auto;}
@@ -144,14 +196,125 @@ footer b{color:var(--accent);}
 
 <!-- GENERATE -->
 <section class="sec" id="generate">
-  <div class="sec-head"><h2>Generate a Website</h2><p>Describe what to build, or leave blank and let the AI surprise you.</p></div>
+  <div class="sec-head"><h2>Generate a Website</h2><p>Control every detail or leave it blank — the AI will surprise you.</p></div>
   <div class="gen-wrap">
-    <span class="gen-lbl">Your prompt (optional)</span>
-    <textarea id="prompt" placeholder="e.g. A neon Pomodoro timer with task tracking…"></textarea>
+
+    <!-- CATEGORY -->
+    <span class="gen-lbl">Category</span>
+    <div class="cat-tabs" id="catTabs">
+      <button class="cat-tab active" data-cat="user" id="cat-user">🌐 Website</button>
+      <button class="cat-tab" data-cat="game" id="cat-game">🎮 Game</button>
+      <button class="cat-tab" data-cat="tool" id="cat-tool">🔧 Tool</button>
+      <button class="cat-tab" data-cat="random" id="cat-random">🎲 Random</button>
+    </div>
+
+    <!-- PROMPT -->
+    <div class="opt-row">
+      <span class="gen-lbl">Your Prompt <span style="color:var(--muted);font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></span>
+      <textarea id="prompt" placeholder="e.g. A neon Pomodoro timer with task tracking…"></textarea>
+    </div>
+
+    <hr class="divider">
+
+    <!-- VISUAL STYLE -->
+    <div class="opt-row">
+      <span class="gen-lbl">Visual Style</span>
+      <div class="opt-chips" id="styleChips">
+        <span class="chip chip-cyber" data-style="cyberpunk neon">⚡ Cyberpunk</span>
+        <span class="chip chip-glass" data-style="glassmorphism">🔮 Glass</span>
+        <span class="chip chip-luxury" data-style="luxury dark">👑 Luxury</span>
+        <span class="chip chip-brute" data-style="brutalism">🧱 Brutalism</span>
+        <span class="chip chip-vapor" data-style="vaporwave">🌸 Vaporwave</span>
+        <span class="chip chip-minimal" data-style="minimalist editorial">🤍 Minimal</span>
+        <span class="chip chip-scifi" data-style="sci-fi holographic">🛸 Sci-Fi</span>
+        <span class="chip chip-retro" data-style="retro terminal">💻 Retro</span>
+        <span class="chip chip-neo" data-style="neobrutalism">🟡 Neo-Brutal</span>
+        <span class="chip chip-ai" data-style="AI aesthetic">🧠 AI Aesthetic</span>
+        <span class="chip" data-style="">🎲 Surprise Me</span>
+      </div>
+    </div>
+
+    <!-- COLOR THEME -->
+    <div class="opt-row">
+      <span class="gen-lbl">Color Theme</span>
+      <div class="palette-row" id="paletteRow">
+        <span class="palette-chip active" data-palette="midnight" title="Midnight" style="background:linear-gradient(135deg,#1a1a2e,#16213e)"></span>
+        <span class="palette-chip" data-palette="neon" title="Neon" style="background:linear-gradient(135deg,#ff2d78,#01cdfe)"></span>
+        <span class="palette-chip" data-palette="forest" title="Forest" style="background:linear-gradient(135deg,#134e4a,#34d399)"></span>
+        <span class="palette-chip" data-palette="sunset" title="Sunset" style="background:linear-gradient(135deg,#c2410c,#fb923c)"></span>
+        <span class="palette-chip" data-palette="ocean" title="Ocean" style="background:linear-gradient(135deg,#0c4a6e,#38bdf8)"></span>
+        <span class="palette-chip" data-palette="royal" title="Royal Purple" style="background:linear-gradient(135deg,#3b0764,#a78bfa)"></span>
+        <span class="palette-chip" data-palette="gold" title="Gold" style="background:linear-gradient(135deg,#78350f,#fbbf24)"></span>
+        <span class="palette-chip" data-palette="mono" title="Monochrome" style="background:linear-gradient(135deg,#111,#e5e5e5)"></span>
+        <span class="palette-chip" data-palette="custom" title="Custom" style="background:conic-gradient(red,yellow,lime,cyan,blue,magenta,red);" id="paletteCustom"></span>
+      </div>
+      <div class="custom-colors" id="customColors">
+        <label>Primary</label>
+        <input type="color" id="colorPrimary" value="#58a6ff">
+        <label>Secondary</label>
+        <input type="color" id="colorSecondary" value="#a78bfa">
+        <label>Accent</label>
+        <input type="color" id="colorAccent" value="#34d399">
+      </div>
+    </div>
+
+    <!-- FONT + COMPLEXITY in grid -->
+    <div class="opt-grid">
+      <div>
+        <span class="gen-lbl">Font</span>
+        <select class="gen-select" id="fontPicker">
+          <option value="">🎲 AI Picks</option>
+          <option value="Outfit">Outfit — Modern Round</option>
+          <option value="Space Grotesk">Space Grotesk — Tech</option>
+          <option value="Plus Jakarta Sans">Plus Jakarta Sans — Clean</option>
+          <option value="Inter">Inter — Neutral</option>
+          <option value="Syne">Syne — Avant-garde</option>
+          <option value="DM Sans">DM Sans — Friendly</option>
+          <option value="Manrope">Manrope — Sharp</option>
+          <option value="JetBrains Mono">JetBrains Mono — Terminal</option>
+        </select>
+      </div>
+      <div>
+        <span class="gen-lbl">Complexity</span>
+        <div class="complexity-row">
+          <button class="cx-btn" data-cx="quick" id="cx-quick">⚡ Quick</button>
+          <button class="cx-btn active" data-cx="standard" id="cx-standard">✦ Standard</button>
+          <button class="cx-btn" data-cx="rich" id="cx-rich">💎 Rich</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ADVANCED TOGGLES -->
+    <button class="adv-toggle" id="advToggle">⚙️ Advanced Options <span class="adv-chevron">▼</span></button>
+    <div class="collapsible-opts" id="advOpts">
+      <span class="gen-lbl" style="margin-bottom:.3rem">Feature Flags</span>
+      <div class="toggle-row" id="toggleRow">
+        <label class="toggle-chip on" id="tog-anim">
+          <input type="checkbox" checked> ✨ Rich Animations
+        </label>
+        <label class="toggle-chip on" id="tog-mobile">
+          <input type="checkbox" checked> 📱 Mobile-First
+        </label>
+        <label class="toggle-chip" id="tog-api">
+          <input type="checkbox"> 🌐 Include Live API Data
+        </label>
+        <label class="toggle-chip" id="tog-dark">
+          <input type="checkbox"> 🌑 Dark Mode Only
+        </label>
+        <label class="toggle-chip" id="tog-particles">
+          <input type="checkbox"> 🌌 Particle Effects
+        </label>
+        <label class="toggle-chip" id="tog-canvas">
+          <input type="checkbox"> 🎨 Canvas Graphics
+        </label>
+      </div>
+    </div>
+
+    <hr class="divider">
     <button class="btn" id="genBtn">⚡ Generate &amp; Deploy</button>
     <div class="terminal" id="terminal">
       <div class="t-dim">> System ready. AI Core online.</div>
-      <div class="t-dim">> Enter a prompt and click Generate.</div>
+      <div class="t-dim">> Set your options and click Generate.</div>
     </div>
   </div>
 </section>
@@ -290,16 +453,92 @@ async function updateCountdowns(){
 updateCountdowns();
 setInterval(updateCountdowns,1000);
 
+// ── Generator Controls State ────────────────────────────
+let selCat='user', selStyle='', selPalette='midnight', selCx='standard';
+
+// Category tabs
+document.getElementById('catTabs').addEventListener('click',e=>{
+  const t=e.target.closest('.cat-tab');if(!t)return;
+  document.querySelectorAll('.cat-tab').forEach(b=>b.classList.remove('active'));
+  t.classList.add('active');selCat=t.dataset.cat;
+});
+
+// Style chips
+document.getElementById('styleChips').addEventListener('click',e=>{
+  const c=e.target.closest('.chip');if(!c)return;
+  document.querySelectorAll('#styleChips .chip').forEach(x=>x.classList.remove('active'));
+  c.classList.add('active');selStyle=c.dataset.style;
+});
+
+// Palette chips
+document.getElementById('paletteRow').addEventListener('click',e=>{
+  const c=e.target.closest('.palette-chip');if(!c)return;
+  document.querySelectorAll('.palette-chip').forEach(x=>x.classList.remove('active'));
+  c.classList.add('active');selPalette=c.dataset.palette;
+  document.getElementById('customColors').classList.toggle('show',selPalette==='custom');
+});
+
+// Complexity buttons
+document.querySelectorAll('.cx-btn').forEach(b=>{
+  b.addEventListener('click',()=>{
+    document.querySelectorAll('.cx-btn').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');selCx=b.dataset.cx;
+  });
+});
+
+// Advanced toggles open/close
+const advToggle=document.getElementById('advToggle');
+advToggle.addEventListener('click',()=>{
+  advToggle.classList.toggle('open');
+  document.getElementById('advOpts').classList.toggle('open');
+});
+
+// Feature flag toggles
+document.querySelectorAll('.toggle-chip').forEach(label=>{
+  label.addEventListener('click',()=>{label.classList.toggle('on');});
+});
+function getToggles(){
+  return {
+    animations: document.getElementById('tog-anim').classList.contains('on'),
+    mobilefirst: document.getElementById('tog-mobile').classList.contains('on'),
+    apidata:  document.getElementById('tog-api').classList.contains('on'),
+    darkonly: document.getElementById('tog-dark').classList.contains('on'),
+    particles:document.getElementById('tog-particles').classList.contains('on'),
+    canvas:   document.getElementById('tog-canvas').classList.contains('on'),
+  };
+}
+function getPalette(){
+  if(selPalette==='custom'){
+    return {primary:document.getElementById('colorPrimary').value, secondary:document.getElementById('colorSecondary').value, accent:document.getElementById('colorAccent').value};
+  }
+  const map={
+    midnight:{primary:'#1a1a2e',secondary:'#16213e',accent:'#58a6ff'},
+    neon:    {primary:'#ff2d78',secondary:'#01cdfe',accent:'#fffb00'},
+    forest:  {primary:'#134e4a',secondary:'#34d399',accent:'#a7f3d0'},
+    sunset:  {primary:'#c2410c',secondary:'#fb923c',accent:'#fde68a'},
+    ocean:   {primary:'#0c4a6e',secondary:'#38bdf8',accent:'#e0f2fe'},
+    royal:   {primary:'#3b0764',secondary:'#a78bfa',accent:'#f0abfc'},
+    gold:    {primary:'#78350f',secondary:'#fbbf24',accent:'#fef3c7'},
+    mono:    {primary:'#111111',secondary:'#e5e5e5',accent:'#999999'},
+  };
+  return map[selPalette]||map.midnight;
+}
+
 // ── Generator ────────────────────────────────────────────
 const btn=document.getElementById('genBtn');
 const term=document.getElementById('terminal');
 function log(msg,cls=''){const d=document.createElement('div');if(cls)d.className=cls;d.innerHTML='> '+msg;term.appendChild(d);term.scrollTop=term.scrollHeight;}
 btn.addEventListener('click',async()=>{
   const prompt=document.getElementById('prompt').value.trim();
-  btn.disabled=true;btn.textContent='⚡ Pipeline Running…';term.innerHTML='';
-  log('Starting autonomous pipeline…','t-dim');
+  const font=document.getElementById('fontPicker').value;
+  const palette=getPalette();
+  const toggles=getToggles();
+  const payload={prompt,category:selCat,style:selStyle||undefined,font:font||undefined,palette,complexity:selCx,toggles};
+  btn.disabled=true;btn.innerHTML='⚡ Pipeline Running…';term.innerHTML='';
+  log(`Category: <b>${selCat}</b> | Style: <b>${selStyle||'AI picks'}</b> | Theme: <b>${selPalette}</b>`,'t-dim');
+  log('Sending to autonomous pipeline…','t-dim');
   try{
-    const data=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt,category:'user'})}).then(r=>r.json());
+    const data=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}).then(r=>r.json());
     if(data.success){
       const s=data.site;
       log(`Step 1/4 ✅ Generated: <b>${s.idea}</b>`,'t-ok');
@@ -307,9 +546,9 @@ btn.addEventListener('click',async()=>{
       log(`Step 3/4 ✅ Committed to repo.`,'t-ok');
       log(`Step 4/4 ✅ <a href="/generated/${s.repoName}/index.html" target="_blank" style="color:var(--accent);text-decoration:underline;">View: ${s.repoName} →</a>`,'t-hi');
       setTimeout(loadGallery,1200);
-    }else{log('Error: '+data.error,'t-err');}
-  }catch(e){log('Network error: '+e.message,'t-err');}
-  btn.disabled=false;btn.textContent='⚡ Generate & Deploy';
+    }else{log('❌ Error: '+data.error,'t-err');}
+  }catch(e){log('❌ Network error: '+e.message,'t-err');}
+  btn.disabled=false;btn.innerHTML='⚡ Generate &amp; Deploy';
 });
 </script>
 </body>

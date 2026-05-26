@@ -31,8 +31,12 @@ async function deployToGitHubAndVercel(site) {
       await exec(`git remote add origin "${remoteUrl}"`);
     }
 
-    // Stage only the generated directory (keeps other working-tree changes safe)
+    // Stage the generated directory (relative path from repo root)
     await exec(`git add frontend/generated`);
+
+    // Set git identity (required when no global config exists)
+    await exec(`git config user.name "${GITHUB_USER}"`);
+    await exec(`git config user.email "${GITHUB_USER}@users.noreply.github.com"`);
 
     // Commit — ignore "nothing to commit" gracefully
     try {

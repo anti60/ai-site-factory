@@ -104,24 +104,42 @@ Reply ONLY with valid JSON: {"idea":"one-line description","repoName":"kebab-cas
 };
 
 // ── Generate one site ─────────────────────────────────────
-async function generateSite(userPrompt = '', category = 'user') {
-  const style = pick(STYLES);
-  const font  = pick(FONTS);
+async function generateSite(userPrompt = '', category = 'user', opts = {}) {
+  const style = opts.style || pick(STYLES);
+  const font  = opts.font  || pick(FONTS);
   const SITE_TYPES = ['SaaS landing page','AI startup','creative portfolio','gaming landing page','music platform','architecture studio','fashion brand','futuristic agency','cybersecurity company','productivity tool'];
   const type = pick(SITE_TYPES);
 
+  // Build extra instructions from user options
+  const extras = [];
+  if (opts.palette) {
+    extras.push(`COLOR PALETTE: Use primary=${opts.palette.primary}, secondary=${opts.palette.secondary}, accent=${opts.palette.accent} as your CSS custom properties.`);
+  }
+  if (opts.complexity === 'quick')   extras.push('COMPLEXITY: Keep it concise — single-page, minimal JS, fast to load.');
+  if (opts.complexity === 'rich')    extras.push('COMPLEXITY: Make it feature-rich — multiple sections, advanced animations, high interactivity.');
+  if (opts.toggles) {
+    if (opts.toggles.animations)  extras.push('REQUIRED: Use rich CSS keyframe animations and smooth transitions throughout.');
+    if (opts.toggles.mobilefirst) extras.push('REQUIRED: Mobile-first responsive design. Test at 375px, 768px, 1280px widths.');
+    if (opts.toggles.apidata)     extras.push('REQUIRED: Fetch real live data from a free public API (wttr.in, quotable.io, api.coingecko.com, etc).');
+    if (opts.toggles.darkonly)    extras.push('REQUIRED: Dark mode only — deep dark background, light text, no light theme.');
+    if (opts.toggles.particles)   extras.push('REQUIRED: Include a canvas-based particle system for visual depth.');
+    if (opts.toggles.canvas)      extras.push('REQUIRED: Use HTML5 Canvas for at least one major visual element or interactive graphic.');
+  }
+  const extraInstructions = extras.length ? '\n\nUSER OVERRIDE REQUIREMENTS:\n' + extras.join('\n') : '';
+
   let system;
-  if (category === 'game')   system = SYSTEM_PROMPTS.game(style, font);
-  else if (category === 'tool')   system = SYSTEM_PROMPTS.tool(style, font);
-  else if (category === 'random') system = SYSTEM_PROMPTS.random(style, font);
-  else                             system = SYSTEM_PROMPTS.user(type, style, font);
+  if (category === 'game')        system = SYSTEM_PROMPTS.game(style, font) + extraInstructions;
+  else if (category === 'tool')   system = SYSTEM_PROMPTS.tool(style, font) + extraInstructions;
+  else if (category === 'random') system = SYSTEM_PROMPTS.random(style, font) + extraInstructions;
+  else                            system = SYSTEM_PROMPTS.user(type, style, font) + extraInstructions;
 
   const user = userPrompt || (category === 'user'
     ? `Build a stunning ${type} with ${style} visual style.`
     : `Generate a unique ${category} website with ${style} aesthetics.`);
 
-  console.log(`[Generator] 🤖 category=${category} | ${style} | ${font}`);
-  const raw    = await callAI(system, user, 4096);
+  const maxTokens = opts.complexity === 'rich' ? 6000 : opts.complexity === 'quick' ? 2500 : 4096;
+  console.log(`[Generator] 🤖 category=${category} | ${style} | ${font} | complexity=${opts.complexity||'standard'}`);
+  const raw    = await callAI(system, user, maxTokens);
   const parsed = extractJSON(raw);
 
   if (!parsed.html || parsed.html.length < 500) throw new Error('Generated HTML too short.');
@@ -133,12 +151,12 @@ async function generateSite(userPrompt = '', category = 'user') {
 }
 
 // ── Full pipeline ─────────────────────────────────────────
-async function runPipeline(userPrompt = '', category = 'user') {
+async function runPipeline(userPrompt = '', category = 'user', opts = {}) {
   const log = [];
   const emit = msg => { console.log(msg); log.push(msg); };
 
   emit(`[Pipeline] ▶ Starting [${category.toUpperCase()}]…`);
-  let site = await generateSite(userPrompt, category);
+  let site = await generateSite(userPrompt, category, opts);
   emit(`[Pipeline] ✅ Idea: ${site.idea}`);
 
   const criticResult = await criticAndRepair(site.html, site.idea);
@@ -148,7 +166,7 @@ async function runPipeline(userPrompt = '', category = 'user') {
   if (criticResult.rejected) {
     emit('[Pipeline] ⚠️  Rejected — retrying with new generation…');
     try {
-      const retrySite = await generateSite(userPrompt, category);
+      const retrySite = await generateSite(userPrompt, category, opts);
       const retry = await criticAndRepair(retrySite.html, retrySite.idea);
       // Use retry result if it scores better, otherwise keep original
       if (retry.score > criticResult.score) {
@@ -230,8 +248,9 @@ function scheduleCategory(category) {
 // ── API routes ────────────────────────────────────────────
 app.post('/api/generate', async (req, res) => {
   try {
-    const { prompt = '', category = 'user' } = req.body;
-    const result = await runPipeline(prompt, category);
+    const { prompt = '', category = 'user', style, font, palette, complexity, toggles } = req.body;
+    const opts = { style, font, palette, complexity, toggles };
+    const result = await runPipeline(prompt, category, opts);
     res.json({ success: true, site: result });
   } catch (err) {
     console.error('[API] ❌', err.message);

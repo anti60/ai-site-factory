@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: ai-site-factory-backend
+    env: node
+    region: oregon
+    buildCommand: npm install --prefix backend
+    startCommand: node backend/generator.js
+    plan: free
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: GITHUB_USER
+        value: anti60
+      - key: GITHUB_TOKEN
+        value: "${GITHUB_TOKEN}"
