@@ -1,5 +1,29 @@
 [
   {
+    "id": "password-generator-1779815554869",
+    "idea": "Generate secure passwords easily",
+    "repoName": "password-generator",
+    "category": "tool",
+    "type": "gaming landing page",
+    "style": "cyberpunk neon",
+    "font": "JetBrains Mono",
+    "repoUrl": "https://github.com/anti60/ai-site-factory/tree/main/frontend/generated/password-generator",
+    "liveUrl": "/generated/password-generator/index.html",
+    "score": 7,
+    "verdict": "repair",
+    "repairs": 0,
+    "critique": "The tool functions adequately but requires improvements in interactivity and design originality to be more engaging and effective.",
+    "dimensions": {
+      "usefulness": 8,
+      "design": 7,
+      "responsiveness": 7,
+      "originality": 6,
+      "usability": 7,
+      "performance": 8
+    },
+    "createdAt": "2026-05-26T17:12:34.869Z"
+  },
+  {
     "id": "fracture-holographic-puzzle-1779815055139",
     "idea": "Fracture: A holographic puzzle game where players repair a damaged neural network by rotating and aligning fractured nodes",
     "repoName": "fracture-holographic-puzzle",
