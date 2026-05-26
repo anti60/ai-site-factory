@@ -381,6 +381,30 @@ footer b{color:var(--accent);}
 </section>
 
 
+<!-- AUTO-GENERATION TIMERS -->
+<section class="sec">
+  <div class="sec-head"><h2>Autonomous AI Engine Active 24/7</h2><p>Our background engine continuously generates new content on fixed timers.</p></div>
+  <div class="feat-grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
+    <div class="fc" style="text-align:center; padding: 2.5rem 1.5rem;">
+      <div class="fc-icon" style="font-size:2.5rem;">🎮</div>
+      <div class="fc-t" style="font-size:1.2rem;">AI Games</div>
+      <div class="fc-d" style="margin-bottom:1.5rem;">Watch as the system auto-generates playable, creative browser games, deploying a brand new web experience automatically.</div>
+      <div class="countdown-bar" style="margin-bottom:0; background:transparent; padding:0;">Next game auto-deploys in: <br><span class="cd-badge" id="cd-game" style="font-size:1.4rem; padding:0.5rem 1rem; margin-top:0.8rem; display:inline-block;">–</span></div>
+    </div>
+    <div class="fc" style="text-align:center; padding: 2.5rem 1.5rem;">
+      <div class="fc-icon" style="font-size:2.5rem;">🔧</div>
+      <div class="fc-t" style="font-size:1.2rem;">Web Tools</div>
+      <div class="fc-d" style="margin-bottom:1.5rem;">Our engine continuously publishes auto-generated web tools designed to solve real daily problems directly in your browser.</div>
+      <div class="countdown-bar" style="margin-bottom:0; background:transparent; padding:0;">Next tool auto-deploys in: <br><span class="cd-badge" id="cd-tool" style="font-size:1.4rem; padding:0.5rem 1rem; margin-top:0.8rem; display:inline-block;">–</span></div>
+    </div>
+    <div class="fc" style="text-align:center; padding: 2.5rem 1.5rem;">
+      <div class="fc-icon" style="font-size:2.5rem;">🎲</div>
+      <div class="fc-t" style="font-size:1.2rem;">Random Experiments</div>
+      <div class="fc-d" style="margin-bottom:1.5rem;">Discover the creative boundaries of AI. Check back for a new AI website featuring unique and experimental designs.</div>
+      <div class="countdown-bar" style="margin-bottom:0; background:transparent; padding:0;">Next creation auto-deploys in: <br><span class="cd-badge" id="cd-random" style="font-size:1.4rem; padding:0.5rem 1rem; margin-top:0.8rem; display:inline-block;">–</span></div>
+    </div>
+  </div>
+</section>
 
 <!-- SEO FEATURES -->
 <section class="sec" style="margin-top:2rem;">
@@ -481,6 +505,25 @@ async function loadStats(){
   }catch(e){console.warn('Stats load failed:',e.message);}
 }
 loadStats();
+
+// ── Countdown timers ─────────────────────────────────────
+function fmtTime(ms){
+  if(ms<=0) return 'deploying…';
+  const s=Math.floor(ms/1000),m=Math.floor(s/60),h=Math.floor(m/60);
+  return h?`${h}h ${m%60}m ${s%60}s`:`${m}m ${s%60}s`;
+}
+async function updateCountdowns(){
+  try{
+    const sched=await fetch(`${API}/api/schedule`).then(r=>r.json());
+    const now=Date.now();
+    ['game','tool','random'].forEach(cat=>{
+      const el=document.getElementById('cd-'+cat);
+      if(el&&sched[cat]) el.textContent=fmtTime(sched[cat]-now);
+    });
+  }catch(_){}
+}
+updateCountdowns();
+setInterval(updateCountdowns,1000);
 
 // ── Generator Controls State ────────────────────────────
 let selCat='user', selStyle='', selPalette='midnight', selCx='standard';
