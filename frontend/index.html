@@ -649,7 +649,8 @@ const btn=document.getElementById('genBtn');
 btn.addEventListener('click',async()=>{
   const prompt=document.getElementById('prompt').value.trim();
   const font=document.getElementById('fontPicker').value;
-  const payload={prompt,category:selCat,style:selStyle||undefined,font:font||undefined,palette:getPalette(),complexity:selCx,toggles:getToggles()};
+  const model=document.getElementById('modelPicker').value;
+  const payload={prompt,category:selCat,style:selStyle||undefined,font:font||undefined,palette:getPalette(),complexity:selCx,toggles:getToggles(),model};
   btn.disabled=true;btn.innerHTML='⚡ Pipeline Running…';
   resetPipeline();
   document.getElementById('pipeline').style.display='flex';
