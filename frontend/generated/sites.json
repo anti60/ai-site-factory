@@ -1,5 +1,29 @@
 [
   {
+    "id": "minimalist-endless-runner-1779820969915",
+    "idea": "A minimalist endless runner where players avoid obstacles and collect stars while the speed gradually increases.",
+    "repoName": "minimalist-endless-runner",
+    "category": "game",
+    "type": "SaaS landing page",
+    "style": "minimalist editorial",
+    "font": "DM Sans",
+    "repoUrl": "https://github.com/anti60/ai-site-factory/tree/main/frontend/generated/minimalist-endless-runner",
+    "liveUrl": "/generated/minimalist-endless-runner/index.html",
+    "score": 5,
+    "verdict": "reject",
+    "repairs": 0,
+    "critique": "The game lacks crucial features and polish necessary for an engaging user experience.",
+    "dimensions": {
+      "usefulness": 6,
+      "design": 5,
+      "responsiveness": 6,
+      "originality": 5,
+      "usability": 5,
+      "performance": 4
+    },
+    "createdAt": "2026-05-26T18:42:49.915Z"
+  },
+  {
     "id": "video-chat-platform-1779819758622",
     "idea": "A fun and interactive video chat platform with customizable avatars and engaging features.",
     "repoName": "video-chat-platform",
