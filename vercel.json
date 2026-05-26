@@ -3,8 +3,6 @@
   "name": "ai-site-factory",
   "buildCommand": null,
   "outputDirectory": "frontend",
-  "cleanUrls": true,
-  "trailingSlash": false,
   "rewrites": [
     {
       "source": "/api/:path*",
