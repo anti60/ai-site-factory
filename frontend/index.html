@@ -380,44 +380,7 @@ footer b{color:var(--accent);}
   </div>
 </section>
 
-<!-- USER GENERATED -->
-<section class="sec" id="sec-user">
-  <div class="sec-head">
-    <h2>🙋 User Generated Sites</h2>
-    <p>Sites built from your custom prompts.</p>
-  </div>
-  <div class="g-grid" id="grid-user"><div class="empty-g"><b>No user sites yet</b>Type a prompt above to create one.</div></div>
-</section>
 
-<!-- AI GAMES -->
-<section class="sec" id="sec-games">
-  <div class="sec-head">
-    <h2>🎮 AI Generated Games</h2>
-    <p>Fully playable browser games created by the AI.</p>
-  </div>
-  <div class="countdown-bar">Next game auto-deploys in: <span class="cd-badge" id="cd-game">–</span></div>
-  <div class="g-grid" id="grid-game"><div class="empty-g"><b>No games yet</b>The AI will auto-generate a game soon.</div></div>
-</section>
-
-<!-- AI TOOLS -->
-<section class="sec" id="sec-tools">
-  <div class="sec-head">
-    <h2>🔧 AI Generated Tools</h2>
-    <p>Useful browser tools that solve real daily problems.</p>
-  </div>
-  <div class="countdown-bar">Next tool auto-deploys in: <span class="cd-badge" id="cd-tool">–</span></div>
-  <div class="g-grid" id="grid-tool"><div class="empty-g"><b>No tools yet</b>The AI will auto-generate a tool soon.</div></div>
-</section>
-
-<!-- AI RANDOM -->
-<section class="sec" id="sec-random">
-  <div class="sec-head">
-    <h2>🎲 AI Generated Random Websites</h2>
-    <p>Experimental, creative, visually unique web experiences.</p>
-  </div>
-  <div class="countdown-bar">Next creation auto-deploys in: <span class="cd-badge" id="cd-random">–</span></div>
-  <div class="g-grid" id="grid-random"><div class="empty-g"><b>No random sites yet</b>The AI will auto-generate one soon.</div></div>
-</section>
 
 <!-- SEO FEATURES -->
 <section class="sec" style="margin-top:2rem;">
@@ -504,78 +467,20 @@ rsz();window.addEventListener('resize',rsz);
 for(let i=0;i<70;i++)pts.push({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:Math.random()*1.2+.4,vx:(Math.random()-.5)*.25,vy:(Math.random()-.5)*.25,a:Math.random()});
 (function anim(){ctx.clearRect(0,0,cv.width,cv.height);pts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;if(p.x<0)p.x=cv.width;if(p.x>cv.width)p.x=0;if(p.y<0)p.y=cv.height;if(p.y>cv.height)p.y=0;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(88,166,255,${.25+p.a*.4})`;ctx.fill();});requestAnimationFrame(anim);})();
 
-// ── Card builder ─────────────────────────────────────────
-function catBadge(cat){
-  const map={game:['b-game','🎮 Game'],tool:['b-tool','🔧 Tool'],random:['b-random','🎲 Random'],user:['b-user','🙋 Custom']};
-  const [cls,lbl]=map[cat]||['b-user','Custom'];
-  return `<span class="badge ${cls}">${lbl}</span>`;
-}
-function buildCards(sites){
-  if(!sites.length) return null;
-  return sites.map(s=>{
-    const low=s.score<7;
-    const date=s.createdAt?new Date(s.createdAt).toLocaleDateString():'–';
-    const url=`/generated/${s.repoName}/index.html`;
-    return `<div class="gcard">
-      <div class="gprev">
-        <iframe src="${url}" loading="lazy" tabindex="-1"></iframe>
-        <div class="gprev-overlay"><a href="${url}" target="_blank">Visit →</a></div>
-      </div>
-      <div class="gbody">
-        <div class="gbadges">
-          <span class="badge b-score ${low?'low':''}">⭐ ${s.score}/10</span>
-          ${catBadge(s.category)}
-        </div>
-        <div class="gtitle">${s.idea}</div>
-        <div class="gmeta">${s.style||''}</div>
-      </div>
-      <div class="gfoot">
-        <div class="gfoot-left"><a href="${url}" target="_blank">Open Live →</a><button class="tweak-btn" onclick="openTweak('${s.repoName}','${(s.idea||'').replace(/'/g,"\\'")}','${s.category||'user'}')">✏️ Tweak</button></div>
-        <span class="gdate">${date}</span>
-      </div>
-    </div>`;
-  }).join('');
-}
-
-// ── Load all gallery sections ─────────────────────────────
-async function loadGallery(){
+// ── Load Stats ─────────────────────────────
+async function loadStats(){
   try{
     const sites=await fetch(`${API}/api/sites`).then(r=>r.json());
-    const bycat={user:[],game:[],tool:[],random:[]};
-    sites.forEach(s=>{ const c=s.category||'user'; if(bycat[c]) bycat[c].push(s); });
+    let counts = {user:0, game:0, tool:0, random:0};
+    sites.forEach(s => { const c = s.category || 'user'; counts[c] = (counts[c] || 0) + 1; });
 
-    document.getElementById('sTotal').textContent=sites.length;
-    document.getElementById('sGames').textContent=bycat.game.length;
-    document.getElementById('sTools').textContent=bycat.tool.length;
-    document.getElementById('sRandom').textContent=bycat.random.length;
-
-    ['user','game','tool','random'].forEach(cat=>{
-      const el=document.getElementById('grid-'+cat);
-      const html=buildCards(bycat[cat]);
-      if(html) el.innerHTML=html;
-    });
-  }catch(e){console.warn('Gallery load failed:',e.message);}
+    document.getElementById('sTotal').textContent = sites.length;
+    document.getElementById('sGames').textContent = counts.game;
+    document.getElementById('sTools').textContent = counts.tool;
+    document.getElementById('sRandom').textContent = counts.random;
+  }catch(e){console.warn('Stats load failed:',e.message);}
 }
-loadGallery();
-
-// ── Countdown timers ─────────────────────────────────────
-function fmtTime(ms){
-  if(ms<=0) return 'deploying…';
-  const s=Math.floor(ms/1000),m=Math.floor(s/60),h=Math.floor(m/60);
-  return h?`${h}h ${m%60}m ${s%60}s`:`${m}m ${s%60}s`;
-}
-async function updateCountdowns(){
-  try{
-    const sched=await fetch(`${API}/api/schedule`).then(r=>r.json());
-    const now=Date.now();
-    ['game','tool','random'].forEach(cat=>{
-      const el=document.getElementById('cd-'+cat);
-      if(el&&sched[cat]) el.textContent=fmtTime(sched[cat]-now);
-    });
-  }catch(_){}
-}
-updateCountdowns();
-setInterval(updateCountdowns,1000);
+loadStats();
 
 // ── Generator Controls State ────────────────────────────
 let selCat='user', selStyle='', selPalette='midnight', selCx='standard';
