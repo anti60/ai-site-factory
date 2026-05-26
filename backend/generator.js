@@ -361,12 +361,48 @@ app.post('/api/tweak', async (req, res) => {
   const { siteName, prompt = '', category = 'user' } = req.body;
   if (!siteName) return res.status(400).json({ error: 'siteName is required' });
   const job  = createJob();
-  const opts = { existingSiteName: siteName, tweakPrompt: prompt };
+  const opts = { existingSiteName: siteName, tweakPrompt: prompt, model: req.body.model };
   res.json({ jobId: job.id });
   runPipeline(prompt, category, opts, job).catch(err => {
     job.status = 'error';
     job.error  = err.message;
   });
+});
+
+// Enhance user prompt
+app.post('/api/enhance', async (req, res) => {
+  const { prompt } = req.body;
+  if (!prompt) return res.status(400).json({ error: 'Prompt is required' });
+  const system = `You are an AI prompt enhancer. The user will provide a short idea for a website. Enhance it into a detailed, highly descriptive 1-2 sentence prompt describing the visual style, key features, layout, and animations. Return ONLY the raw enhanced prompt string, no quotes, no markdown.`;
+  try {
+    const { callAI } = require('./openrouter');
+    const enhanced = await callAI(system, prompt, 500, 'openai/gpt-4o-mini');
+    res.json({ enhanced: enhanced.trim() });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Delete a site
+app.post('/api/delete', async (req, res) => {
+  const { siteName } = req.body;
+  if (!siteName) return res.status(400).json({ error: 'siteName is required' });
+  try {
+    const genDir = path.resolve(__dirname, '../frontend/generated');
+    const siteDir = path.join(genDir, siteName);
+    if (await fse.pathExists(siteDir)) {
+      await fse.remove(siteDir);
+    }
+    const metaPath = path.join(genDir, 'sites.json');
+    if (await fse.pathExists(metaPath)) {
+      let sites = await fse.readJson(metaPath);
+      sites = sites.filter(s => s.repoName !== siteName);
+      await fse.writeJson(metaPath, sites, { spaces: 2 });
+    }
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 // Sites list

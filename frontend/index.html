@@ -253,7 +253,10 @@ footer b{color:var(--accent);}
 
     <!-- PROMPT -->
     <div class="opt-row">
-      <span class="gen-lbl">Your Prompt <span style="color:var(--muted);font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></span>
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 0.5rem;">
+        <span class="gen-lbl" style="margin-bottom:0;">Your Prompt <span style="color:var(--muted);font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></span>
+        <button id="enhanceBtn" style="background:var(--bg-card); border:1px solid var(--border); color:var(--accent); padding:4px 10px; border-radius:12px; font-size:0.75rem; cursor:pointer; font-weight:700; transition:all 0.2s;">✨ Enhance</button>
+      </div>
       <textarea id="prompt" placeholder="e.g. A neon Pomodoro timer with task tracking…"></textarea>
     </div>
 
@@ -636,8 +639,7 @@ function applyJob(job){
   if(job.status==='done'){
     const s=job.site;
     document.getElementById('pipeStatus').textContent='✅ Complete!';
-    const vercelBase='https://ai-site-factory-green.vercel.app';
-    document.getElementById('pipeResult').innerHTML=`<b>🚀 Live:</b> <a href="${vercelBase}/generated/${s.repoName}/index.html" target="_blank">${s.repoName} →</a> &nbsp;|&nbsp; ⭐ ${s.score}/10 &nbsp;|&nbsp; ${(s.verdict||'').toUpperCase()}`;
+    document.getElementById('pipeResult').innerHTML=`<b>🚀 Live:</b> <a href="${vercelBase}/generated/${s.repoName}/index.html" target="_blank">${s.repoName} →</a> &nbsp;|&nbsp; <a href="${s.repoUrl}" target="_blank" style="color:#aaa;">Source Code ↗</a> &nbsp;|&nbsp; ⭐ ${s.score}/10 &nbsp;|&nbsp; ${(s.verdict||'').toUpperCase()}`;
     document.getElementById('pipeResult').className='pipe-result show';
   }else if(job.status==='error'){
     document.getElementById('pipeStatus').textContent='❌ Failed';
@@ -678,6 +680,36 @@ btn.addEventListener('click',async()=>{
     document.getElementById('pipeStatus').textContent='❌ Network error: '+e.message;
     btn.disabled=false;btn.innerHTML='⚡ Generate &amp; Deploy';
   }
+});
+
+// ── Enhance Prompt ───────────────────────────────────────
+const enhanceBtn = document.getElementById('enhanceBtn');
+enhanceBtn.addEventListener('click', async () => {
+  const promptEl = document.getElementById('prompt');
+  const original = promptEl.value.trim();
+  if (!original) {
+    alert('Please enter a basic idea first!');
+    return;
+  }
+  enhanceBtn.disabled = true;
+  enhanceBtn.textContent = '✨ Enhancing...';
+  try {
+    const res = await fetch(`${API}/api/enhance`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt: original })
+    });
+    const data = await res.json();
+    if (data.enhanced) {
+      promptEl.value = data.enhanced;
+    } else {
+      alert('Failed to enhance: ' + (data.error || 'Unknown error'));
+    }
+  } catch (e) {
+    alert('Error connecting to enhancer API.');
+  }
+  enhanceBtn.disabled = false;
+  enhanceBtn.textContent = '✨ Enhance';
 });
 
 // ── Tweak Modal ──────────────────────────────────────────
