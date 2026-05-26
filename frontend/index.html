@@ -373,6 +373,7 @@ footer b{color:var(--accent);}
 
 <script>
 // ── Canvas particles ─────────────────────────────────────
+const API = 'https://ai-site-factory.onrender.com';
 const cv=document.getElementById('bg'),ctx=cv.getContext('2d');
 let pts=[];
 function rsz(){cv.width=innerWidth;cv.height=innerHeight;}
@@ -416,7 +417,7 @@ function buildCards(sites){
 // ── Load all gallery sections ─────────────────────────────
 async function loadGallery(){
   try{
-    const sites=await fetch('/api/sites').then(r=>r.json());
+    const sites=await fetch(`${API}/api/sites`).then(r=>r.json());
     const bycat={user:[],game:[],tool:[],random:[]};
     sites.forEach(s=>{ const c=s.category||'user'; if(bycat[c]) bycat[c].push(s); });
 
@@ -442,7 +443,7 @@ function fmtTime(ms){
 }
 async function updateCountdowns(){
   try{
-    const sched=await fetch('/api/schedule').then(r=>r.json());
+    const sched=await fetch(`${API}/api/schedule`).then(r=>r.json());
     const now=Date.now();
     ['game','tool','random'].forEach(cat=>{
       const el=document.getElementById('cd-'+cat);
@@ -538,7 +539,7 @@ btn.addEventListener('click',async()=>{
   log(`Category: <b>${selCat}</b> | Style: <b>${selStyle||'AI picks'}</b> | Theme: <b>${selPalette}</b>`,'t-dim');
   log('Sending to autonomous pipeline…','t-dim');
   try{
-    const data=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}).then(r=>r.json());
+    const data=await fetch(`${API}/api/generate`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}).then(r=>r.json());
     if(data.success){
       const s=data.site;
       log(`Step 1/4 ✅ Generated: <b>${s.idea}</b>`,'t-ok');

@@ -11,11 +11,21 @@ const { addRoute }                = require('./routeBuilder');
 const app  = express();
 const PORT = process.env.PORT || 4000;
 
-app.use(cors());
+app.use(cors({
+  origin: [
+    'https://ai-site-factory-green.vercel.app',
+    'https://ai-site-factory.vercel.app',
+    /\.vercel\.app$/,
+    'http://localhost:4000'
+  ],
+  methods: ['GET','POST']
+}));
 app.use(express.json());
 
-// Frontend is served exclusively by Vercel now.
-// Backend only serves API endpoints.
+const FRONTEND = path.resolve(__dirname, '../frontend');
+app.use(express.static(FRONTEND));
+console.log(`[Server] 📂 Serving frontend from: ${FRONTEND}`);
+
 // ── Shared pools ──────────────────────────────────────────
 const STYLES = ['cyberpunk neon','brutalism','glassmorphism','minimalist editorial','luxury dark','sci-fi holographic','retro terminal','AI aesthetic','vaporwave','neobrutalism'];
 const FONTS  = ['Space Grotesk','Plus Jakarta Sans','DM Sans','Syne','Outfit','Inter','Manrope'];
@@ -258,8 +268,7 @@ app.post('/api/generate', async (req, res) => {
 
 app.get('/api/sites', async (req, res) => {
   try {
-    const genDir = path.resolve(__dirname, '../frontend/generated');
-    const metaPath = path.join(genDir, 'sites.json');
+    const metaPath = path.join(FRONTEND, 'generated', 'sites.json');
     const sites = (await fse.pathExists(metaPath)) ? await fse.readJson(metaPath).catch(() => []) : [];
     res.json(sites);
   } catch (err) { res.status(500).json({ error: err.message }); }
@@ -272,8 +281,12 @@ app.get('/api/schedule', (req, res) => {
 
 app.get('/api/health', (req, res) => res.json({ status: 'ok', ts: new Date().toISOString() }));
 
+app.get('*', (req, res) => res.sendFile(path.join(FRONTEND, 'index.html')));
+
 app.listen(PORT, () => {
-  console.log(`\n[Server] 🚀 Backend API Running at http://localhost:${PORT}`);
+  console.log(`\n[Server] 🚀 Running at http://localhost:${PORT}`);
+  console.log(`[Server] 🌐 Frontend: http://localhost:${PORT}/index.html`);
+  console.log(`[Server] 📊 Dashboard: http://localhost:${PORT}/dashboard.html\n`);
 });
 
 module.exports = { runPipeline };
