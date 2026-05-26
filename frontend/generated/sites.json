@@ -1,5 +1,29 @@
 [
   {
+    "id": "snake-game-emojis-1779805515559",
+    "idea": "A fun interactive Snake game with user-controlled emojis.",
+    "repoName": "snake-game-emojis",
+    "category": "user",
+    "type": "architecture studio",
+    "style": "AI aesthetic",
+    "font": "Space Grotesk",
+    "repoUrl": "https://github.com/anti60/ai-site-factory/tree/main/frontend/generated/snake-game-emojis",
+    "liveUrl": "/generated/snake-game-emojis/index.html",
+    "score": 5,
+    "verdict": "reject",
+    "repairs": 0,
+    "critique": "The game has potential but suffers from poor UI design, responsiveness issues, and lacks essential functionalities for a polished user experience.",
+    "dimensions": {
+      "usefulness": 7,
+      "design": 4,
+      "responsiveness": 4,
+      "originality": 5,
+      "usability": 5,
+      "performance": 6
+    },
+    "createdAt": "2026-05-26T14:25:15.559Z"
+  },
+  {
     "id": "cyberpunk-flappy-bird-1779746424241",
     "idea": "A cyberpunk-themed flappy bird clone where players navigate through neon obstacles.",
     "repoName": "cyberpunk-flappy-bird",
