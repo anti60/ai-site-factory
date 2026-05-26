@@ -2,7 +2,7 @@ require('dotenv').config();
 const axios = require('axios');
 
 const MODELS = [
-  'anthropic/claude-sonnet-latest',
+  'anthropic/claude-sonnet-4.6',
   'openai/gpt-4o',
   'openai/gpt-4o-mini'
 ];
