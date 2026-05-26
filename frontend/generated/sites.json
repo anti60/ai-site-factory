@@ -1,5 +1,29 @@
 [
   {
+    "id": "endless-runner-ai-1779814184093",
+    "idea": "An endless runner where players navigate through a futuristic cityscape while avoiding obstacles and collecting energy orbs.",
+    "repoName": "endless-runner-ai",
+    "category": "game",
+    "type": "creative portfolio",
+    "style": "AI aesthetic",
+    "font": "DM Sans",
+    "repoUrl": "https://github.com/anti60/ai-site-factory/tree/main/frontend/generated/endless-runner-ai",
+    "liveUrl": "/generated/endless-runner-ai/index.html",
+    "score": 4.5,
+    "verdict": "reject",
+    "repairs": 0,
+    "critique": "The game has fundamentally broken physics (gravity only applies during jump calls), no futuristic visuals despite the premise, broken mobile scaling causing wrong hit detection, and zero visual polish — it is not deployable.",
+    "dimensions": {
+      "usefulness": 6,
+      "design": 3,
+      "responsiveness": 3,
+      "originality": 3,
+      "usability": 4,
+      "performance": 6
+    },
+    "createdAt": "2026-05-26T16:49:44.093Z"
+  },
+  {
     "id": "snake-game-emojis-1779805515559",
     "idea": "A fun interactive Snake game with user-controlled emojis.",
     "repoName": "snake-game-emojis",
