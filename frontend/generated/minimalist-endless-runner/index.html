@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minimalist Endless Runner</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { margin: 0; font-family: 'DM Sans', sans-serif; background: #f4f4f4; color: #333; overflow: hidden; }
+        canvas { display: block; background: #fff; margin: 0 auto; border: 2px solid #58a6ff; }
+        #gameHUD { position: absolute; top: 10px; left: 10px; z-index: 100; font-size: 18px; }
+        #restartBtn { display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #58a6ff; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        #instruction { position: absolute; top: 10px; right: 10px; z-index: 100; font-size: 16px; background: rgba(255, 255, 255, 0.8); padding: 10px; border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); display: none; }
+
+        @media (max-width: 600px) {
+            canvas { width: 100%; height: auto; }
+            #gameHUD { font-size: 16px; }
+            #restartBtn { padding: 8px 16px; font-size: 16px; }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="gameCanvas" width="400" height="600"></canvas>
+    <div id="gameHUD">Score: <span id="score">0</span></div>
+    <button id="restartBtn">Restart</button>
+    <div id="instruction">Press Space to Jump!</div>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const scoreElement = document.getElementById('score');
+        const restartBtn = document.getElementById('restartBtn');
+        const instruction = document.getElementById('instruction');
+
+        let isGameOver = false;
+        let score = 0;
+        let speed = 2;
+        let playerY = canvas.height - 60;
+        let obstacles = [];
+        let jumpSound = new Audio('jump.mp3');
+        let gameOverSound = new Audio('gameover.mp3');
+
+        function startGame() {
+            obstacles = [];
+            score = 0;
+            speed = 2;
+            isGameOver = false;
+            scoreElement.innerText = score;
+            restartBtn.style.display = 'none';
+            instruction.style.display = 'none';
+            requestAnimationFrame(gameLoop);
+        }
+
+        function gameLoop() {
+            if (isGameOver) {
+                instruction.style.display = 'none';
+                return;
+            }
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawPlayer();
+            moveObstacles();
+            checkCollision();
+            score += Math.floor(speed * 0.1);
+            scoreElement.innerText = score;
+            if (score % 100 === 0) speed += 0.5; // Increase difficulty
+            requestAnimationFrame(gameLoop);
+        }
+
+        function drawPlayer() {
+            ctx.fillStyle = '#58a6ff';
+            ctx.fillRect(50, playerY, 50, 50);
+        }
+
+        function moveObstacles() {
+            if (Math.random() < 0.02) {
+                const height = Math.random() * 30 + 20;
+                obstacles.push({ x: canvas.width, y: canvas.height - height, width: 30, height });
+            }
+            obstacles.forEach(obstacle => {
+                obstacle.x -= speed;
+                ctx.fillStyle = '#ff6b6b';
+                ctx.fillRect(obstacle.x, obstacle.y, obstacle.width, obstacle.height);
+            });
+            obstacles = obstacles.filter(obstacle => obstacle.x + obstacle.width > 0);
+        }
+
+        function checkCollision() {
+            for (let obstacle of obstacles) {
+                if (obstacle.x < 100 && obstacle.x + obstacle.width > 50 && playerY > canvas.height - obstacle.height) {
+                    isGameOver = true;
+                    gameOverSound.play();
+                    alert('Game Over! Your score: ' + score);
+                    restartBtn.style.display = 'block';
+                    return;
+                }
+            }
+        }
+
+        document.addEventListener('keydown', function(event) {
+            if (event.code === 'Space' && !isGameOver) {
+                jumpSound.play();
+                playerY = Math.max(playerY - 60, canvas.height - 60);
+            }
+        });
+
+        document.addEventListener('keyup', function(event) {
+            if (event.code === 'Space') {
+                playerY = canvas.height - 60;
+            }
+        });
+
+        restartBtn.addEventListener('click', startGame);
+        instruction.style.display = 'block';
+        startGame();
+    </script>
+    <a href="https://ai-site-factory-green.vercel.app" id="__back_btn" style="position:fixed;bottom:20px;right:20px;z-index:99999;background:rgba(10,10,15,0.9);backdrop-filter:blur(10px);color:#58a6ff;border:1px solid rgba(88,166,255,0.4);padding:10px 18px;border-radius:50px;font-family:sans-serif;font-size:14px;font-weight:600;text-decoration:none;box-shadow:0 4px 20px rgba(0,0,0,0.5);">← AI Site Factory</a>
+</body>
+</html>
