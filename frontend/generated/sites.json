@@ -24,28 +24,28 @@
     "createdAt": "2026-05-26T14:25:15.559Z"
   },
   {
-    "id": "cyberpunk-flappy-bird-1779746424241",
-    "idea": "A cyberpunk-themed flappy bird clone where players navigate through neon obstacles.",
+    "id": "cyberpunk-flappy-bird-1779805830360",
+    "idea": "A sci-fi endless runner where players dodge incoming holographic obstacles while collecting power-ups.",
     "repoName": "cyberpunk-flappy-bird",
     "category": "game",
-    "type": "creative portfolio",
-    "style": "cyberpunk neon",
-    "font": "Space Grotesk",
+    "type": "productivity tool",
+    "style": "sci-fi holographic",
+    "font": "Inter",
     "repoUrl": "https://github.com/anti60/ai-site-factory/tree/main/frontend/generated/cyberpunk-flappy-bird",
     "liveUrl": "/generated/cyberpunk-flappy-bird/index.html",
     "score": 5,
     "verdict": "reject",
     "repairs": 0,
-    "critique": "The tool is a broken clone of Flappy Bird with significant usability and functionality issues.",
+    "critique": "The game has fundamental usability issues and lacks polish for deployment.",
     "dimensions": {
-      "usefulness": 5,
+      "usefulness": 8,
       "design": 6,
-      "responsiveness": 7,
-      "originality": 4,
+      "responsiveness": 5,
+      "originality": 6,
       "usability": 5,
-      "performance": 5
+      "performance": 4
     },
-    "createdAt": "2026-05-25T22:00:24.241Z"
+    "createdAt": "2026-05-26T14:30:30.360Z"
   },
   {
     "id": "bubble-popper-game-1779745317030",
