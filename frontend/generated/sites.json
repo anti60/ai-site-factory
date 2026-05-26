@@ -1,5 +1,29 @@
 [
   {
+    "id": "vaporwave-digital-playground-1779822767300",
+    "idea": "A futuristic digital playground with animated particles and interactive SVG art.",
+    "repoName": "vaporwave-digital-playground",
+    "category": "random",
+    "type": "productivity tool",
+    "style": "vaporwave",
+    "font": "Outfit",
+    "repoUrl": "https://github.com/anti60/ai-site-factory/tree/main/frontend/generated/vaporwave-digital-playground",
+    "liveUrl": "/generated/vaporwave-digital-playground/index.html",
+    "score": 3,
+    "verdict": "reject",
+    "repairs": 0,
+    "critique": "The tool lacks real usefulness and meaningful interaction, making it largely decorative and unfit for deployment.",
+    "dimensions": {
+      "usefulness": 2,
+      "design": 5,
+      "responsiveness": 4,
+      "originality": 5,
+      "usability": 3,
+      "performance": 4
+    },
+    "createdAt": "2026-05-26T19:12:47.300Z"
+  },
+  {
     "id": "color-palette-generator-1779821836628",
     "idea": "A simple color palette generator that creates random color schemes.",
     "repoName": "color-palette-generator",
