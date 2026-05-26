@@ -24,28 +24,28 @@
     "createdAt": "2026-05-26T17:12:34.869Z"
   },
   {
-    "id": "fracture-holographic-puzzle-1779815718625",
-    "idea": "A memory matching game where players drag to swap cards and find pairs.",
+    "id": "fracture-holographic-puzzle-1779816628095",
+    "idea": "An endless runner where players dodge obstacles while collecting coins.",
     "repoName": "fracture-holographic-puzzle",
     "category": "game",
-    "type": "AI startup",
-    "style": "glassmorphism",
-    "font": "Inter",
+    "type": "gaming landing page",
+    "style": "brutalism",
+    "font": "Syne",
     "repoUrl": "https://github.com/anti60/ai-site-factory/tree/main/frontend/generated/fracture-holographic-puzzle",
     "liveUrl": "/generated/fracture-holographic-puzzle/index.html",
-    "score": 7,
+    "score": 6,
     "verdict": "repair",
     "repairs": 0,
-    "critique": "The game is functional and useful, but UI design and responsiveness need improvement for a polished user experience.",
+    "critique": "The game is functional but needs improvements in design, responsiveness, and user guidance to enhance overall quality.",
     "dimensions": {
       "usefulness": 8,
-      "design": 6,
-      "responsiveness": 7,
+      "design": 5,
+      "responsiveness": 5,
       "originality": 6,
-      "usability": 8,
+      "usability": 7,
       "performance": 7
     },
-    "createdAt": "2026-05-26T17:15:18.625Z"
+    "createdAt": "2026-05-26T17:30:28.095Z"
   },
   {
     "id": "endless-runner-ai-1779814184093",
