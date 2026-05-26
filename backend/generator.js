@@ -42,7 +42,7 @@ REQUIREMENTS:
 - Semantic HTML5, CSS custom properties, at least 4 sections
 - At least 2 interactive JS features with real functionality
 - Premium feel comparable to Awwwards
-- FREE API optional: wttr.in, quotable.io, api.coingecko.com, etc.
+- FREE API optional: wttr.in, api.coingecko.com, dog.ceo, etc.
 
 Reply ONLY with valid JSON: {"idea":"one-line brand description","repoName":"kebab-case-name","html":"complete html string"}`,
 
@@ -78,7 +78,7 @@ TOOL REQUIREMENTS:
 - Tool ideas: QR generator, password generator, weather app, pomodoro timer, calculator, note app, markdown previewer, expense tracker, unit converter, gradient generator, focus timer, color palette picker, JSON formatter, regex tester, word counter
 - Modern polished UI, smooth transitions, interactive feedback
 - Mobile responsive
-- May use free public APIs: wttr.in, quotable.io, etc.
+- May use free public APIs: wttr.in, api.coingecko.com, dog.ceo, etc.
 
 FORBIDDEN: broken APIs, unfinished UI, fake buttons, authentication systems
 
@@ -120,7 +120,7 @@ async function generateSite(userPrompt = '', category = 'user', opts = {}) {
   if (opts.toggles) {
     if (opts.toggles.animations)  extras.push('REQUIRED: Use rich CSS keyframe animations and smooth transitions throughout.');
     if (opts.toggles.mobilefirst) extras.push('REQUIRED: Mobile-first responsive design. Test at 375px, 768px, 1280px widths.');
-    if (opts.toggles.apidata)     extras.push('REQUIRED: Fetch real live data from a free public API (wttr.in, quotable.io, api.coingecko.com, etc).');
+    if (opts.toggles.apidata)     extras.push('REQUIRED: Fetch real live data from a free public API (wttr.in, api.coingecko.com, etc).');
     if (opts.toggles.darkonly)    extras.push('REQUIRED: Dark mode only — deep dark background, light text, no light theme.');
     if (opts.toggles.particles)   extras.push('REQUIRED: Include a canvas-based particle system for visual depth.');
     if (opts.toggles.canvas)      extras.push('REQUIRED: Use HTML5 Canvas for at least one major visual element or interactive graphic.');
