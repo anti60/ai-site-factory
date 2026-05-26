@@ -1,5 +1,29 @@
 [
   {
+    "id": "typing-challenge-game-1779822847103",
+    "idea": "A fast-paced typing challenge where players must type random words as quickly as possible.",
+    "repoName": "typing-challenge-game",
+    "category": "game",
+    "type": "music platform",
+    "style": "neobrutalism",
+    "font": "Outfit",
+    "repoUrl": "https://github.com/anti60/ai-site-factory/tree/main/frontend/generated/typing-challenge-game",
+    "liveUrl": "/generated/typing-challenge-game/index.html",
+    "score": 8,
+    "verdict": "deploy",
+    "repairs": 0,
+    "critique": "The tool is functional and solves a real problem, but minor improvements are needed for accessibility and feedback.",
+    "dimensions": {
+      "usefulness": 8,
+      "design": 7,
+      "responsiveness": 9,
+      "originality": 8,
+      "usability": 9,
+      "performance": 8
+    },
+    "createdAt": "2026-05-26T19:14:07.103Z"
+  },
+  {
     "id": "vaporwave-digital-playground-1779822767300",
     "idea": "A futuristic digital playground with animated particles and interactive SVG art.",
     "repoName": "vaporwave-digital-playground",
