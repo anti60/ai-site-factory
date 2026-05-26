@@ -330,6 +330,15 @@ footer b{color:var(--accent);}
     <!-- ADVANCED TOGGLES -->
     <button class="adv-toggle" id="advToggle">⚙️ Advanced Options <span class="adv-chevron">▼</span></button>
     <div class="collapsible-opts" id="advOpts">
+      <span class="gen-lbl" style="margin-bottom:.3rem">AI Model Engine</span>
+      <select class="gen-select" id="modelPicker" style="margin-bottom:1rem; width:100%;">
+        <option value="anthropic/claude-sonnet-4.6">Claude Sonnet 4.6 (Premium Quality)</option>
+        <option value="openai/gpt-4o-mini">GPT-4o-mini (Fast & Good)</option>
+        <option value="meta-llama/llama-3.1-70b-instruct">Llama 3.1 70B (Groq / Free / Ultra Fast)</option>
+        <option value="qwen/qwen-2.5-coder-32b-instruct">Qwen 2.5 Coder (Free)</option>
+        <option value="mistralai/mixtral-8x7b-instruct">Mixtral 8x7B (Free)</option>
+      </select>
+
       <span class="gen-lbl" style="margin-bottom:.3rem">Feature Flags</span>
       <div class="toggle-row" id="toggleRow">
         <label class="toggle-chip on" id="tog-anim">
