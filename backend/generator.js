@@ -87,7 +87,12 @@ REQUIREMENTS:
 - Semantic HTML5, CSS custom properties, at least 4 sections
 - At least 2 interactive JS features with real functionality
 - Premium feel comparable to Awwwards
-- FREE API optional: wttr.in, api.coingecko.com, dog.ceo, etc.
+- FREE API optional: wttr.in, api.coingecko.com, dog.ceo, etc. (DO NOT use api.quotable.io, it is offline)
+
+STRICT CODING RULES:
+1. Vanilla JavaScript ONLY. Do NOT use jQuery or $ syntax.
+2. If using fetch(), wrap in try/catch and silently fallback gracefully on failure. Do not leave uncaught errors.
+3. NEVER use $1, $2 variables unless properly defined in regex.
 
 Reply ONLY with valid JSON: {"idea":"one-line brand description","repoName":"kebab-case-name","html":"complete html string"}`,
 
@@ -106,6 +111,11 @@ GAME REQUIREMENTS:
 - Polished game HUD, smooth animations, satisfying interactions
 - Strong visual effects, particle systems if applicable
 
+STRICT CODING RULES:
+1. Vanilla JavaScript ONLY. Do NOT use jQuery or $ syntax.
+2. NEVER use $1, $2 variables unless properly defined in regex.
+3. Handle canvas drawing cleanly.
+
 FORBIDDEN: broken controls, unfinished gameplay, fake UI, copied famous games
 
 Reply ONLY with valid JSON: {"idea":"one-line game description","repoName":"kebab-case-name","html":"complete html string"}`,
@@ -123,7 +133,12 @@ TOOL REQUIREMENTS:
 - Tool ideas: QR generator, password generator, weather app, pomodoro timer, calculator, note app, markdown previewer, expense tracker, unit converter, gradient generator, focus timer, color palette picker, JSON formatter, regex tester, word counter
 - Modern polished UI, smooth transitions, interactive feedback
 - Mobile responsive
-- May use free public APIs: wttr.in, api.coingecko.com, etc.
+- May use free public APIs: wttr.in, api.coingecko.com, etc. (DO NOT use api.quotable.io, it is offline)
+
+STRICT CODING RULES:
+1. Vanilla JavaScript ONLY. Do NOT use jQuery or $ syntax.
+2. If using fetch(), wrap in try/catch and silently fallback gracefully on failure. Do not leave uncaught errors.
+3. NEVER use $1, $2 variables unless properly defined in regex.
 
 FORBIDDEN: broken APIs, unfinished UI, fake buttons, authentication systems
 
@@ -142,6 +157,11 @@ CREATIVE REQUIREMENTS:
 - Canvas effects, SVG animations, particle systems, mouse interactions encouraged
 - Every generation must feel completely unique
 - Should feel like award-winning creative coding experiments
+
+STRICT CODING RULES:
+1. Vanilla JavaScript ONLY. Do NOT use jQuery or $ syntax.
+2. If using fetch(), wrap in try/catch and silently fallback gracefully on failure. Do not leave uncaught errors.
+3. NEVER use $1, $2 variables unless properly defined in regex.
 
 FORBIDDEN: boring layouts, copied templates, unfinished sections, broken interactions
 
