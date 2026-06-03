@@ -1,27 +1,27 @@
 [
   {
-    "id": "ai-driven-insights-1780468890768",
-    "idea": "Empowering businesses with AI-driven insights",
-    "repoName": "ai-driven-insights",
-    "category": "user",
-    "type": "SaaS landing page",
-    "style": "cyberpunk neon",
-    "font": "Plus Jakarta Sans",
-    "repoUrl": "https://github.com/anti60/ai-site-factory/tree/main/frontend/generated/ai-driven-insights",
-    "liveUrl": "/generated/ai-driven-insights/index.html",
-    "score": 6,
-    "verdict": "repair",
+    "id": "expense-tracker-tool-1780469365501",
+    "idea": "A multi-functional expense tracker that helps users visualize their spending habits with graphs and summaries.",
+    "repoName": "expense-tracker-tool",
+    "category": "tool",
+    "type": "gaming landing page",
+    "style": "AI aesthetic",
+    "font": "Space Grotesk",
+    "repoUrl": "https://github.com/anti60/ai-site-factory/tree/main/frontend/generated/expense-tracker-tool",
+    "liveUrl": "/generated/expense-tracker-tool/index.html",
+    "score": 5,
+    "verdict": "reject",
     "repairs": 0,
-    "critique": "The tool has potential but requires significant improvements in design and usability before deployment.",
+    "critique": "The tool lacks proper graph representation and has several usability and accessibility issues.",
     "dimensions": {
-      "usefulness": 7,
-      "design": 5,
-      "responsiveness": 7,
+      "usefulness": 6,
+      "design": 4,
+      "responsiveness": 5,
       "originality": 6,
-      "usability": 6,
-      "performance": 6
+      "usability": 4,
+      "performance": 5
     },
-    "createdAt": "2026-06-03T06:41:30.768Z"
+    "createdAt": "2026-06-03T06:49:25.501Z"
   },
   {
     "id": "password-generator-1779815554869",
