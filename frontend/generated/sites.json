@@ -1,27 +1,27 @@
 [
   {
-    "id": "expense-tracker-tool-1780469365501",
-    "idea": "A multi-functional expense tracker that helps users visualize their spending habits with graphs and summaries.",
-    "repoName": "expense-tracker-tool",
-    "category": "tool",
-    "type": "gaming landing page",
-    "style": "AI aesthetic",
-    "font": "Space Grotesk",
-    "repoUrl": "https://github.com/anti60/ai-site-factory/tree/main/frontend/generated/expense-tracker-tool",
-    "liveUrl": "/generated/expense-tracker-tool/index.html",
+    "id": "cat-gallery-website-1780721419688",
+    "idea": "Feline fashion and lifestyle brand that celebrates the elegance of cats.",
+    "repoName": "cat-gallery-website",
+    "category": "user",
+    "type": "fashion brand",
+    "style": "cyberpunk neon",
+    "font": "DM Sans",
+    "repoUrl": "https://github.com/anti60/ai-site-factory/tree/main/frontend/generated/cat-gallery-website",
+    "liveUrl": "/generated/cat-gallery-website/index.html",
     "score": 5,
     "verdict": "reject",
     "repairs": 0,
-    "critique": "The tool lacks proper graph representation and has several usability and accessibility issues.",
+    "critique": "The tool lacks clear usefulness, suffers from design issues, and has responsive problems, making it unsuitable for deployment.",
     "dimensions": {
       "usefulness": 6,
-      "design": 4,
-      "responsiveness": 5,
-      "originality": 6,
-      "usability": 4,
+      "design": 5,
+      "responsiveness": 4,
+      "originality": 5,
+      "usability": 6,
       "performance": 5
     },
-    "createdAt": "2026-06-03T06:49:25.501Z"
+    "createdAt": "2026-06-06T04:50:19.688Z"
   },
   {
     "id": "password-generator-1779815554869",
